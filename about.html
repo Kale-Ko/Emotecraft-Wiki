@@ -17,10 +17,17 @@
             # Emotecraft Wiki
             ## About
         </div>
+
+        <div id="page-contents">
+            ## Contents
+
+            [Title](#about)
+        </div>
     </div>
 
     <script>
         document.getElementById("main").innerHTML = marked.parse(document.getElementById("main").textContent.replace(/\n            /g, "\n"))
+        document.getElementById("page-contents").innerHTML = marked.parse(document.getElementById("page-contents").textContent.replace(/\n            /g, "\n"))
     </script>
 </body>
 
