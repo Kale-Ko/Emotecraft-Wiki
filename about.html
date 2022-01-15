@@ -16,18 +16,20 @@
         <div id="main">
             # Emotecraft Wiki
             ## About
-        </div>
 
-        <div id="page-contents">
-            ## Contents
+            Emotecraft is a mod for Minecraft Java that allows you to play emotes like on Minecraft Bedrock.\
+            It supports forge and fabric and is usually pretty quick to update to new versions of the game.
 
-            [Title](#about)
+            Downloads can be found [here](./downloads)
+
+            **Important Note:** The mod or plugin must also be installed on the server to be able to see others emotes.
+
+            Different mod loaders (forge/fabric) are fully compatible with each other and also the bukkit plugin, however different versions may not be (eg. 2.1 SNAPSHOT-build.6 might not work with 2.1 SNAPSHOT-build.10) (Especially realeses vs snapshots)
         </div>
     </div>
 
     <script>
         document.getElementById("main").innerHTML = marked.parse(document.getElementById("main").textContent.replace(/\n            /g, "\n"))
-        document.getElementById("page-contents").innerHTML = marked.parse(document.getElementById("page-contents").textContent.replace(/\n            /g, "\n"))
     </script>
 </body>
 
