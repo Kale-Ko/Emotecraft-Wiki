@@ -37,12 +37,26 @@ html {
     border: var(--border-thickness) solid var(--border-color);
     border-radius: var(--border-radius);
 
-    width: 70%;
+    width: 56%;
+
+    margin: 3% 1% 3% 1%;
+    padding: 2%;
+
+    float: left;
+    text-align: center;
+}
+
+#page-contents {
+    background: var(--forground-color);
+    border: var(--border-thickness) solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    width: 10%;
 
     margin: 3% 3% 3% 1%;
     padding: 2%;
 
-    float: right;
+    float: left;
     text-align: center;
 }
 
