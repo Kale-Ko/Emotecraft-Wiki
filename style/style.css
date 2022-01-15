@@ -10,6 +10,9 @@ html {
 
     --text-font: "Roboto Slab";
     --text-color: #ffffff;
+
+    --link-color: #0000ff;
+    --link-hover-color: #0000bb;
 }
 
 html,
@@ -67,4 +70,35 @@ html#sidebar>body {
     margin: 0px;
 
     overflow: hidden;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+h2 {
+    font-size: 40px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+p {
+    font-size: 16px;
+}
+
+a {
+    font-size: 16px;
+    text-decoration: underline;
+
+    color: var(--link-color)
+}
+
+a:hover {
+    color: var(--link-hover-color)
+}
+
+a:active {
+    color: var(--link-color)
 }
