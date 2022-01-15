@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>Emotecraft Wiki - Home</title>
+    <link rel="icon" href="assets/icon.webp">
+    <link rel="stylesheet" href="style/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <div id="content">
+        <iframe id="sidebar-embed" title="Sidebar" src="./_sidebar.html"></iframe>
+
+        <div id="main">
+            # Emotecraft Wiki
+            ## Home
+
+            Welcome to the home of the official Emotecraft wiki.
+
+            Check out the sidebar to the left for infomation about installing, using, creating, and publishing for the mod.
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("main").innerHTML = marked.parse(document.getElementById("main").textContent.replace(/\n            /g, "\n"))
+    </script>
+</body>
+
+</html>

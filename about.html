@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>Emotecraft Wiki - About</title>
+    <link rel="icon" href="assets/icon.webp">
+    <link rel="stylesheet" href="style/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <div id="content">
+        <iframe id="sidebar-embed" title="Sidebar" src="./_sidebar.html"></iframe>
+
+        <div id="main">
+            # Emotecraft Wiki
+            ## About
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("main").innerHTML = marked.parse(document.getElementById("main").textContent.replace(/\n            /g, "\n"))
+    </script>
+</body>
+
+</html>
