@@ -2,8 +2,7 @@
 
 html {
     --background-color: #444444;
-    --main-color: #777777;
-    --sidebar-color: #555555;
+    --forground-color: #777777;
 
     --border-color: #333333;
     --border-thickness: 3px;
@@ -31,7 +30,7 @@ html {
 }
 
 #main {
-    background: var(--main-color);
+    background: var(--forground-color);
     border: var(--border-thickness) solid var(--border-color);
     border-radius: var(--border-radius);
 
@@ -45,7 +44,7 @@ html {
 }
 
 #sidebar-embed {
-    background: var(--sidebar-color);
+    background: var(--forground-color);
     border: var(--border-thickness) solid var(--border-color);
     border-radius: var(--border-radius);
 
@@ -62,7 +61,7 @@ html {
 html#sidebar,
 html#sidebar>head,
 html#sidebar>body {
-    background: var(--sidebar-color);
+    background: var(--forground-color);
 
     padding: 0px;
     margin: 0px;
