@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en-US" id="sidebar">
+
+<head>
+    <title>Emotecraft Wiki - Sidebar</title>
+    <link rel="icon" href="assets/icon.webp">
+    <link rel="stylesheet" href="style/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <div id="content">
+        # Nav
+
+        [Home](/)\
+        [About](/about)
+
+        ### Installing Emotecraft
+
+        ### Using Emotecraft
+
+        ### Creating emotes
+
+        ### Sharing emotes
+    </div>
+
+    <script>
+        document.getElementById("content").innerHTML = marked.parse(document.getElementById("content").textContent.replace(/\n        /g, "\n"))
+    </script>
+</body>
+
+</html>
