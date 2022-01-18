@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>Emotecraft Wiki - Downloading Custom Emotes</title>
+    <link rel="icon" href="./assets/icon.webp">
+    <link rel="stylesheet" href="./style/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <div id="content">
+        <iframe id="sidebar-embed" title="Sidebar" src="./sidebar.html"></iframe>
+
+        <div id="main">
+            # Emotecraft Wiki
+            ## Downloading Custom Emotes
+
+            Currently you can download emotes either from the old [emote archive](https://github.com/KosmX/Emotecraft-emotes) or from the #emote-list in the [Discord server](https://discord.com/invite/PSW2t4Ujm6)
+
+            In the emote archive find the emote you want (eg. https://github.com/KosmX/Emotecraft-emotes/blob/master/emotes/Twerk.json). Then click the "Raw" button. Finally Right Click -> Save as.
+
+            In the Discord server find the emote you want and click the download button.
+
+            Next see [Installing Custom Emotes](./install-emotes) for how to install them from there.
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("main").innerHTML = marked.parse(document.getElementById("main").textContent.replace(/\n            /g, "\n"))
+    </script>
+</body>
+
+</html>
