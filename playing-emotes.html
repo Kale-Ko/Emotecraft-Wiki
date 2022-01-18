@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>Emotecraft Wiki - Playing Emotes</title>
+    <link rel="icon" href="./assets/icon.webp">
+    <link rel="stylesheet" href="./style/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <div id="content">
+        <iframe id="sidebar-embed" title="Sidebar" src="./sidebar.html"></iframe>
+
+        <div id="main">
+            # Emotecraft Wiki
+            ## Playing Emotes
+
+            To play an emote simply press 'b' (or whatever you set the open emote wheel keybind too)\
+            There you will see the emote wheel (See [Setting the emote wheel](/setting-emote-wheel)),\
+            you can select and emote from here (if you've set it up) or click "All Emotes" to view a list of all your emotes.\
+            To play an emote simply left click it
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("main").innerHTML = marked.parse(document.getElementById("main").textContent.replace(/\n            /g, "\n"))
+    </script>
+</body>
+
+</html>

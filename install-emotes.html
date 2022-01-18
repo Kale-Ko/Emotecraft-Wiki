@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>Emotecraft Wiki - Installing Custom Emotes</title>
+    <link rel="icon" href="./assets/icon.webp">
+    <link rel="stylesheet" href="./style/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <div id="content">
+        <iframe id="sidebar-embed" title="Sidebar" src="./sidebar.html"></iframe>
+
+        <div id="main">
+            # Emotecraft Wiki
+            ## Installing Custom Emotes
+
+            To install an emote you simple need to drag the .json or .emotecraft file into the emotes folder.
+
+            The emotes folder is located at
+            Windows: `C:/Users/{your user}/AppData/Roaming/.minecraft/emotes` aka `%appdata%/.minecraft/emotes`\
+            Linux: ` /home/{your user}/.minecraft/emotes` aka `~/.minecraft/emotes`\
+            Max OS: `/Users/{your user}/Library/Application Support/minecraft/emotes` aka `~/Library/Application Support/minecraft/emotes`
+
+            Then restart your game and the emotes will show up.
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("main").innerHTML = marked.parse(document.getElementById("main").textContent.replace(/\n            /g, "\n"))
+    </script>
+</body>
+
+</html>
