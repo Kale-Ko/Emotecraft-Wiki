@@ -6,14 +6,14 @@
     <link rel="icon" href="./assets/icon.webp">
     <link rel="stylesheet" href="./style/style.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="./scripts/marked.js"></script>
 </head>
 
 <body>
     <div id="content">
         <iframe id="sidebar-embed" title="Sidebar" src="./sidebar.html"></iframe>
 
-        <div id="main">
+        <div id="main" class="markdown">
             # Emotecraft Wiki
             ## About
 
@@ -27,10 +27,6 @@
             Different mod loaders (Forge/Fabric) are also fully compatible with each other and the Bukkit plugin, however different versions may not be (eg. 2.1 SNAPSHOT-build.6 might not work with 2.1 SNAPSHOT-build.10)
         </div>
     </div>
-
-    <script>
-        document.getElementById("main").innerHTML = marked.parse(document.getElementById("main").textContent.replace(/\n            /g, "\n"))
-    </script>
 </body>
 
 </html>

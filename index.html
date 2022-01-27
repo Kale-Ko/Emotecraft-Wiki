@@ -6,14 +6,14 @@
     <link rel="icon" href="./assets/icon.webp">
     <link rel="stylesheet" href="./style/style.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="./scripts/marked.js"></script>
 </head>
 
 <body>
     <div id="content">
         <iframe id="sidebar-embed" title="Sidebar" src="./sidebar.html"></iframe>
 
-        <div id="main">
+        <div id="main" class="marked">
             # Emotecraft Wiki
             ## Home
 
@@ -22,10 +22,6 @@
             Check out the left sidebar to see how to install and use the mod. You can also see how to create custom emotes.
         </div>
     </div>
-
-    <script>
-        document.getElementById("main").innerHTML = marked.parse(document.getElementById("main").textContent.replace(/\n            /g, "\n"))
-    </script>
 </body>
 
 </html>
