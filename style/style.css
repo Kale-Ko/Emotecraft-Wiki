@@ -61,7 +61,7 @@ html {
     text-align: center;
 }
 
-#sidebar-embed {
+#sidebar {
     background: var(--forground-color);
     border: var(--border-thickness) solid var(--border-color);
     border-radius: var(--border-radius);
@@ -74,17 +74,6 @@ html {
 
     float: left;
     text-align: center;
-}
-
-html#sidebar,
-html#sidebar>head,
-html#sidebar>body {
-    background: var(--forground-color);
-
-    padding: 0px;
-    margin: 0px;
-
-    overflow: hidden;
 }
 
 .dropdown {
