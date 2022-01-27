@@ -6,11 +6,11 @@
     <link rel="icon" href="./assets/icon.webp">
     <link rel="stylesheet" href="./style/style.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="./scripts/marked.js"></script>
 </head>
 
 <body>
-    <div id="content">
+    <div id="content" class="markdown">
         ## Pages
 
         [Home](./)\
@@ -37,8 +37,6 @@
     </div>
 
     <script>
-        document.getElementById("content").innerHTML = marked.parse(document.getElementById("content").textContent.replace(/\n        /g, "\n"))
-
         var items = document.getElementsByTagName("a")
         for (var i = 0; i < items.length; i++) {
             var element = items.item(i)
