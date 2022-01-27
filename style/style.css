@@ -11,8 +11,8 @@ html {
     --text-font: "Roboto Slab";
     --text-color: #ffffff;
 
-    --link-color: #0000ff;
-    --link-hover-color: #0000bb;
+    --link-color: #2828ff;
+    --link-hover-color: #2222d8;
 }
 
 html,
@@ -98,8 +98,12 @@ h3 {
     font-size: 24px;
 }
 
+h4 {
+    font-size: 18px;
+}
+
 p {
-    font-size: 16px;
+    font-size: 15px;
 }
 
 a {
