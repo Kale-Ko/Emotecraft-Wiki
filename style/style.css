@@ -3,6 +3,7 @@
 html {
     --background-color: #444444;
     --forground-color: #777777;
+    --dropdown-color: #686868;
 
     --border-color: #333333;
     --border-thickness: 3px;
@@ -69,7 +70,7 @@ html {
     height: 80vh;
 
     margin: 3% 1% 3% 3%;
-    padding: 2%;
+    padding: 1%;
 
     float: left;
     text-align: center;
@@ -84,6 +85,24 @@ html#sidebar>body {
     margin: 0px;
 
     overflow: hidden;
+}
+
+.dropdown {
+    background: var(--dropdown-color);
+
+    border: var(--border-thickness) solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    padding: 10%;
+    margin: 3% 0px;
+}
+
+.dropdown .dropdown-element {
+    display: none;
+}
+
+.dropdown.open .dropdown-element {
+    display: block;
 }
 
 h1 {
@@ -103,8 +122,11 @@ h4 {
 }
 
 p,
-a {
+a,
+.dropdown p,
+.dropdown p a {
     font-size: 15px;
+    font-weight: 100;
 }
 
 a {
