@@ -6,14 +6,14 @@
     <link rel="icon" href="./assets/icon.webp">
     <link rel="stylesheet" href="./style/style.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="./scripts/marked.js"></script>
 </head>
 
 <body>
     <div id="content">
         <iframe id="sidebar-embed" title="Sidebar" src="./sidebar.html"></iframe>
 
-        <div id="main">
+        <div id="main" class="markdown">
             # Emotecraft Wiki
             ## Installing on Fabric
 
@@ -31,10 +31,6 @@
             Then you just need to start/restart your Minecraft client.
         </div>
     </div>
-
-    <script>
-        document.getElementById("main").innerHTML = marked.parse(document.getElementById("main").textContent.replace(/\n            /g, "\n"))
-    </script>
 </body>
 
 </html>
