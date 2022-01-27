@@ -29,12 +29,42 @@
         [Downloading Custom Emotes](./download-emotes)\
         [Installing Custom Emotes](./install-emotes)
 
-        ### Creating emotes
+        <!-- ### Creating emotes -->
 
-        ### Sharing emotes
+        <!-- ### Sharing emotes -->
     </div>
 
     <script src="./scripts/marked.js"></script>
+
+    <script>
+        var parent = document.getElementById("content")
+
+        var header = 0
+
+        for (var index = 0; index < parent.children.length; index++) {
+            var element = parent.children.item(index)
+
+            if (element.tagName == "H3") {
+                header = index
+
+                element.classList.add("dropdown")
+
+                element.addEventListener("click", event => {
+                    if (!event.srcElement.classList.contains("open")) {
+                        event.srcElement.classList.add("open")
+                    } else {
+                        event.srcElement.classList.remove("open")
+                    }
+                })
+            } else if (element.tagName == "P" && header != 0) {
+                element.remove()
+                element.classList.add("dropdown-element")
+                parent.children.item(header).appendChild(element)
+
+                index--
+            }
+        }
+    </script>
 
     <script>
         var items = document.getElementsByTagName("a")
