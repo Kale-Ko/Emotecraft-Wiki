@@ -8,11 +8,9 @@
 // Begin added script
 // Auto apply markdown
 
-var elements = document.getElementsByClassName("markdown")
-
-for (var index = 0; index < elements.length; index++) {
-    var element = elements.item(index)
+var elements = document.querySelectorAll(".markdown")
+elements.forEach(element => {
     element.innerHTML = marked.parse(element.innerHTML.replace(/\n            /g, "\n").replace(/\n        /g, "\n"))
-}
+})
 
 // End added script
