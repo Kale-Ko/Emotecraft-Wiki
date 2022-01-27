@@ -2,28 +2,111 @@
 <html lang="en-US">
 
 <head>
-    <title>Emotecraft Wiki - Home</title>
+    <title>Emotecraft Wiki</title>
     <link rel="icon" href="./assets/icon.webp">
     <link rel="stylesheet" href="./style/style.css">
 </head>
 
 <body>
     <div id="content">
-        <iframe id="sidebar-embed" title="Sidebar" src="./sidebar.html"></iframe>
+        <div id="sidebar"></div>
 
-        <div id="main" class="markdown">
-            # Emotecraft Wiki
-            ## Home
-
-            <h3 style="color:yellow;">**This is very much a work in progress, everything is subject to change**</h3>
-
-            Welcome to the home of the official Emotecraft wiki.
-
-            Check out the left sidebar to see how to install and use the mod. You can also see how to create custom emotes.
-        </div>
+        <div id="main"></div>
     </div>
 
-    <script src="./scripts/marked.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        var search = new URLSearchParams(window.location.search)
+        var page = search.get("page") || "home"
+        var lang = search.get("lang") || "en"
+
+        console.log("Loading page " + page + " in language " + lang)
+
+        fetch("./pages/" + lang + "/" + page + ".md").then(res => {
+            if (res.status != 404) {
+                return res.text()
+            } else {
+                return fetch("./pages/" + lang + "/language.json").then(res => {
+                    if (res.status != 404) {
+                        return fetch("./pages/en/" + page + ".md").then(res => {
+                            if (res.status == 404) {
+                                return fetch("./pages/" + lang + "/404-notfound.md").then(res => {
+                                    if (res.status != 404) {
+                                        return res.text()
+                                    } else {
+                                        return fetch("./pages/en/404-notfound.md").then(res => res.text())
+                                    }
+                                })
+                            } else {
+                                return fetch("./pages/en/404-untranslated-page.md").then(res => res.text())
+                            }
+                        })
+                    } else {
+                        return fetch("./pages/en/404-untranslated-language.md").then(res => res.text())
+                    }
+                })
+            }
+        }).then(markdown => {
+            function fixLinks(parent) {
+                for (var index = 0; index < parent.children.length; index++) {
+                    var child = parent.children.item(index)
+
+                    if (child.tagName == "A") {
+                        var href = child.getAttribute("href")
+
+                        if (href.startsWith("./")) {
+                            child.href = "./?page=" + href.replace("./", "") + "&lang=" + lang
+                            child.target = "_parent"
+                        }
+                    }
+
+                    fixLinks(child)
+                }
+            }
+
+            var main = document.getElementById("main")
+            main.innerHTML = marked.parse(markdown)
+            fixLinks(main)
+
+            fetch("./pages/" + lang + "/sidebar.md").then(res => {
+                if (res.status != 404) {
+                    return res.text()
+                } else {
+                    return ""
+                }
+            }).then(markdown => {
+                var sidebar = document.getElementById("sidebar")
+                sidebar.innerHTML = marked.parse(markdown)
+                fixLinks(sidebar)
+
+                var header = 0
+
+                for (var index = 0; index < sidebar.children.length; index++) {
+                    var element = sidebar.children.item(index)
+
+                    if (element.tagName == "H3") {
+                        header = index
+
+                        element.classList.add("dropdown")
+
+                        element.addEventListener("click", event => {
+                            if (!event.srcElement.classList.contains("open")) {
+                                event.srcElement.classList.add("open")
+                            } else {
+                                event.srcElement.classList.remove("open")
+                            }
+                        })
+                    } else if (element.tagName == "P" && header != 0) {
+                        element.remove()
+                        element.classList.add("dropdown-element")
+                        sidebar.children.item(header).appendChild(element)
+
+                        index--
+                    }
+                }
+            })
+        })
+    </script>
 </body>
 
 </html>
