@@ -9,7 +9,11 @@
 
 <body>
     <div id="content">
-        <div id="sidebar"></div>
+        <div id="navbar">
+            <div id="sidebar"></div>
+
+            <select id="language"></select>
+        </div>
 
         <div id="main"></div>
     </div>
@@ -102,6 +106,33 @@
                         index--
                     }
                 }
+            })
+        })
+
+        fetch("./pages/languages.json").then(res => res.json()).then(languages => {
+            var languagelist = document.getElementById("language")
+
+            var index = 0
+            function next() {
+                fetch("./pages/" + languages[index] + "/language.json").then(res => res.json()).then(language => {
+                    var option = document.createElement("option")
+                    option.value = language.code
+                    option.innerHTML = language.name + " (" + language.status + ")"
+                    languagelist.appendChild(option)
+                    if (lang == language.code) languagelist.value = language.code
+
+                    if (index < languages.length - 1) {
+                        index++
+                        next()
+                    }
+                })
+            }
+            next()
+
+            languagelist.addEventListener("change", event => {
+                lang = languagelist.value
+
+                window.location.replace("./?page=" + page + "&lang=" + lang)
             })
         })
     </script>
