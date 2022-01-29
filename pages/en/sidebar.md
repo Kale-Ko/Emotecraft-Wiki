@@ -1,6 +1,6 @@
 ## Pages
 
-[Home](./)\
+[Home](./home)\
 [About](./about)
 
 ### Installing Emotecraft
