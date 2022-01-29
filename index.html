@@ -20,8 +20,6 @@
         var page = search.get("page") || "home"
         var lang = search.get("lang") || "en"
 
-        console.log("Loading page " + page + " in language " + lang)
-
         fetch("./pages/" + lang + "/" + page + ".md").then(res => {
             if (res.status != 404) {
                 return res.text()
