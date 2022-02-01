@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en">
 
 <head>
     <title>Emotecraft Wiki</title>
@@ -40,7 +40,13 @@
                                     }
                                 })
                             } else {
-                                return fetch("./pages/en/404-untranslated-page.md").then(res => res.text())
+                                return fetch("./pages/" + lang + "404-untranslated-language.md").then(res => {
+                                    if (res.status != 404) {
+                                        return res.text()
+                                    } else {
+                                        return fetch("./pages/en/404-untranslated-language.md").then(res => res.text())
+                                    }
+                                })
                             }
                         })
                     } else {
@@ -69,6 +75,9 @@
             var main = document.getElementById("main")
             main.innerHTML = marked.parse(markdown)
             fixLinks(main)
+
+            document.title = main.children.item(0).innerHTML + " - " + main.children.item(1).innerHTML
+            document.querySelector("html").lang = lang
 
             fetch("./pages/" + lang + "/sidebar.md").then(res => {
                 if (res.status != 404) {
