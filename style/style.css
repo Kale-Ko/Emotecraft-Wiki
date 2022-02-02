@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto+Slab");
 
 html {
-    --background-color: #444444;
+    --background-color: radial-gradient(#555555 25%, #444444 75%);
     --forground-color: #777777;
     --dropdown-color: #686868;
 
