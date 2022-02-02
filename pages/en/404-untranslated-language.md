@@ -2,4 +2,4 @@
 
 ## 404 Untranslated Language
 
-The language you where trying to use has not been translated to yet
+The language you were trying to use has not been translated yet
