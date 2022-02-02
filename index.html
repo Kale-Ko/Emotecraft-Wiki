@@ -63,7 +63,7 @@
                         var href = child.getAttribute("href")
 
                         if (href.startsWith("./")) {
-                            child.href = "./?page=" + href.replace("./", "") + "&lang=" + lang
+                            child.href = "./?page=" + href.replace("./", "").split("#")[0] + "&lang=" + lang + (href.replace("./", "").split("#")[1] != undefined ? "#" + href.replace("./", "").split("#")[1] : "")
                             child.target = "_parent"
                         }
                     }
