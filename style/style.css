@@ -1,8 +1,8 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto+Slab");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400..900");
 
 html {
     --background-color: radial-gradient(#555555 25%, #444444 75%);
-    --forground-color: #777777;
+    --forground-color: #6e6e6e;
     --dropdown-color: #686868;
 
     --border-color: #333333;
@@ -10,10 +10,10 @@ html {
     --border-radius: 20px;
 
     --text-font: "Roboto Slab";
-    --text-color: #ffffff;
+    --text-color: #fcfcfc;
 
-    --link-color: #2828ff;
-    --link-hover-color: #2222d8;
+    --link-color: #001aff;
+    --link-hover-color: #0015d1;
 }
 
 html,
@@ -131,16 +131,18 @@ a,
 .dropdown p,
 .dropdown p a {
     font-size: 15px;
-    font-weight: 100;
+    font-weight: 450;
 }
 
 a {
-    text-decoration: underline;
+    text-decoration: none;
 
     color: var(--link-color)
 }
 
 a:hover {
+    text-decoration: underline;
+
     color: var(--link-hover-color)
 }
 
