@@ -23,6 +23,7 @@
         var search = new URLSearchParams(window.location.search)
         var page = search.get("page") || "home"
         var lang = search.get("lang") || "en"
+        var scrollto = search.get("scroll") || "top"
 
         fetch("./pages/" + lang + "/" + page + ".md").then(res => {
             if (res.status != 404) {
@@ -63,7 +64,7 @@
                         var href = child.getAttribute("href")
 
                         if (href.startsWith("./")) {
-                            child.href = "./?page=" + href.replace("./", "").split("#")[0] + "&lang=" + lang + (href.replace("./", "").split("#")[1] != undefined ? "#" + href.replace("./", "").split("#")[1] : "")
+                            child.href = "./?page=" + href.replace("./", "").split("#")[0] + "&lang=" + lang + (href.replace("./", "").split("#")[1] != undefined ? "&scroll=" + href.replace("./", "").split("#")[1] : "")
                             child.target = "_parent"
                         }
                     }
@@ -79,6 +80,8 @@
             document.title = main.children.item(0).innerHTML + " - " + main.children.item(1).innerHTML
             document.querySelector("html").lang = lang
 
+            if (scrollto != "top") document.querySelector("#" + scrollto).scrollIntoView()
+
             fetch("./pages/" + lang + "/sidebar.md").then(res => {
                 if (res.status != 404) {
                     return res.text()
@@ -92,7 +95,7 @@
 
                 var header = 0
 
-                for (var index = 0; index < sidebar.children.length; index++) {
+                /* for (var index = 0; index < sidebar.children.length; index++) {
                     var element = sidebar.children.item(index)
 
                     if (element.tagName == "H3") {
@@ -114,7 +117,7 @@
 
                         index--
                     }
-                }
+                } */
             })
         })
 
