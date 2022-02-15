@@ -1,7 +1,8 @@
 ## Pages
 
 [Home](./home)\
-[About](./about)
+[About](./about)\
+[Discord](https://discord.com/invite/38e348fxVS)
 
 ### Installing Emotecraft
 
@@ -19,8 +20,10 @@
 [Downloading Custom Emotes](./download-emotes)\
 [Installing Custom Emotes](./install-emotes)
 
-### Creating emotes
+### Creating Emotes
 
 [Creating Emotes With Blender](./create-emotes-blender)
 
-<!-- ### Sharing emotes -->
+### Sharing Emotes
+
+[Sharing Emotes](./sharing-emotes)
