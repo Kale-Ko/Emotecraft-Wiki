@@ -19,6 +19,8 @@
 [Downloading Custom Emotes](./download-emotes)\
 [Installing Custom Emotes](./install-emotes)
 
-<!-- ### Creating emotes -->
+### Creating emotes
+
+[Creating Emotes With Blender](./create-emotes-blender)
 
 <!-- ### Sharing emotes -->
