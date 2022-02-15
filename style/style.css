@@ -3,11 +3,15 @@
 html {
     --background-color: radial-gradient(#555555 25%, #444444 75%);
     --forground-color: #6e6e6e;
-    --dropdown-color: #686868;
 
     --border-color: #333333;
     --border-thickness: 3px;
     --border-radius: 20px;
+
+    --dropdown-color: #5c5c5c;
+    --dropdown-border-color: #333333;
+    --dropdown-border-thickness: 2.5px;
+    --dropdown-border-radius: 14px;
 
     --text-font: "Roboto Slab";
     --text-color: #fcfcfc;
@@ -87,8 +91,8 @@ html {
 .dropdown {
     background: var(--dropdown-color);
 
-    border: var(--border-thickness) solid var(--border-color);
-    border-radius: var(--border-radius);
+    border: var(--dropdown-border-thickness) solid var(--dropdown-border-color);
+    border-radius: var(--dropdown-border-radius);
 
     padding: 10%;
     margin: 3% 0px;
