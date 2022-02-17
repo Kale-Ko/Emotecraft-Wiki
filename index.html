@@ -23,7 +23,7 @@
         var search = new URLSearchParams(window.location.search)
         var page = search.get("page") || "home"
         var lang = search.get("lang") || "en"
-        var scrollto = search.get("scroll") || "top"
+        var scrollTo = search.get("scroll") || "top"
 
         fetch("./pages/" + lang + "/" + page + ".md").then(res => {
             if (res.status != 404) {
@@ -80,7 +80,7 @@
             document.title = main.children.item(0).innerHTML + " - " + main.children.item(1).innerHTML
             document.querySelector("html").lang = lang
 
-            if (scrollto != "top") document.querySelector("#" + scrollto).scrollIntoView({ block: "center", inline: "center" })
+            if (scrollTo != "top") document.querySelector("#" + scrollTo).scrollIntoView({ block: "center", inline: "center" })
 
             fetch("./pages/" + lang + "/sidebar.md").then(res => {
                 if (res.status != 404) {
