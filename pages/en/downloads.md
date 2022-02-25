@@ -9,7 +9,7 @@ but you can also use Curseforge ([Forge](https://www.curseforge.com/minecraft/mc
 
 For the Bukkit plugin go [here](https://dev.bukkit.org/projects/emotecraft-bukkit/files).
 
-The most up to date versions for all loaders can also be found on [Github](https://github.com/KosmX/emotes/releases).
+The most up to date versions for all loaders and also the bungee download can be found on [Github](https://github.com/KosmX/emotes/releases).
 
 Next see [Installing on Fabric](./install-fabric) or [Installing on Forge](./install-forge) to install the mod.
 
