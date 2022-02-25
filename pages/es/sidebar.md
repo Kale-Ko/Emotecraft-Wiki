@@ -1,3 +1,0 @@
-## Paginas
-
-[Casero](./home)
