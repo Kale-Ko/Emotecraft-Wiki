@@ -35,7 +35,7 @@ Allow NSFW emotes to be played - ON/OFF - Default OFF - Weather or not to allow 
 Debug - ON/OFF - Default ON - Weather or not to print debug messages into the console\
 Validate emote - ON/OFF - Default OFF - Weather or not to make sure players stay close to their actually possition while playing emotes\
 Validation threshold - Number 0.04 - 256 - Default 8.0 - How far is to far for a limb to be\
-Load server side emotes - ON/OFF - Default OFF - Weather or not to load emotes on the server and send them to clients\
+<!-- Load server side emotes - ON/OFF - Default OFF - Weather or not to load emotes on the server and send them to clients\ -->
 Always validate received emotes - ON/OFF - Default OFF - Weather or not to always make sure the limbs are not to far, even if it is disabled on the server\
 Stop emote at this speed threshold - Number 0.02 - 2980 - Default 0.04 - How fast a player needs to be going for an emote to be stopped\
 Y axis moving influence in top threshold - Number 0 - 100 - Default 75 - How much the y (up/down) axis contributes to the speed threshold
