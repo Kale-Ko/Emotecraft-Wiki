@@ -2,13 +2,17 @@
 
 ## FAQ
 
+### Where can I get more help?
+
+You can get help in the [Discord server](https://discord.com/invite/PSW2t4Ujm6)
+
 ### Where do I download the mod?
 
-You can download it from [here](./downloads)
+You can download the mod from [here](./downloads)
 
 ### How do I play an emote?
 
-See [here](./playing-emotes)
+See [Playing Emotes](./playing-emotes)
 
 ### How do I make an emote?
 
@@ -16,7 +20,7 @@ See the [blender tutorial](./create-emotes-blender)
 
 ### Where do I put the custom emotes?
 
-See [here](./install-emotes)
+See [Installing Emotes](./install-emotes)
 
 ### Do custom emotes need to be installed on all clients to work?
 
@@ -28,7 +32,7 @@ The mod needs to be on both the client and the server.
 
 ### Where can I find others emotes?
 
-See [here](./download-emotes)
+See [Downloading Emotes](./download-emotes)
 
 ### Can you make the mod for x version
 
