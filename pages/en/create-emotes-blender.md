@@ -16,3 +16,6 @@ When you are done switch to the export tab. Here you will see a script with a fe
 When you are done click the play/run button. This will generate an emote.json in the same place as the blend file.
 
 Next see [Installing Custom Emotes](./install-emotes) to install the emote you created.
+
+If you want you can add an icon for your emote, just put the image in the emotes folder as `{nameofemotefile}.png`
+You can also add music to your emotes. See [here](./creating-music)
