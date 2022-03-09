@@ -37,107 +37,123 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         var search = new URLSearchParams(window.location.search)
-        var page = search.get("page") || "home"
-        var lang = search.get("lang") || "en"
-        var scrollTo = search.get("scroll") || "top"
+        var page = search.get("page") || null
+        var lang = search.get("lang") || null
+        var scrollTo = search.get("scroll") || null
 
-        fetch("./pages/" + lang + "/" + page + ".md").then(res => {
-            if (res.status != 404) {
-                return res.text()
-            } else {
-                return fetch("./pages/" + lang + "/language.json").then(res => {
-                    if (res.status != 404) {
-                        return fetch("./pages/en/" + page + ".md").then(res => {
-                            if (res.status == 404) {
-                                return fetch("./pages/" + lang + "/404-notfound.md").then(res => {
-                                    if (res.status != 404) {
-                                        return res.text()
-                                    } else {
-                                        return fetch("./pages/en/404-notfound.md").then(res => res.text())
-                                    }
-                                })
-                            } else {
-                                return fetch("./pages/" + lang + "404-untranslated-language.md").then(res => {
-                                    if (res.status != 404) {
-                                        return res.text()
-                                    } else {
-                                        return fetch("./pages/en/404-untranslated-language.md").then(res => res.text())
-                                    }
-                                })
-                            }
-                        })
-                    } else {
-                        return fetch("./pages/en/404-untranslated-language.md").then(res => res.text())
+        fetch("./pages/languages.json").then(res => res.json()).then(languages => {
+            if (lang == null) {
+                navigator.languages.forEach(language => {
+                    if (languages.includes(language)) {
+                        lang = language
                     }
                 })
-            }
-        }).then(markdown => {
-            function fixLinks(parent) {
-                for (var index = 0; index < parent.children.length; index++) {
-                    var child = parent.children.item(index)
 
-                    if (child.tagName == "A") {
-                        var href = child.getAttribute("href")
-
-                        if (href.startsWith("./")) {
-                            child.href = "./?page=" + href.replace("./", "").split("#")[0] + "&lang=" + lang + (href.replace("./", "").split("#")[1] != undefined ? "&scroll=" + href.replace("./", "").split("#")[1] : "")
-                            child.target = "_parent"
-                        }
-                    }
-
-                    fixLinks(child)
+                if (lang == null) {
+                    lang = "en"
                 }
             }
 
-            var main = document.getElementById("main")
-            main.innerHTML = marked.parse(markdown)
-            fixLinks(main)
+            if (search.get("page") == null || search.get("lang") == null) {
+                window.location.replace("./?page=" + (page || "home") + "&lang=" + (lang || "en"))
+            }
 
-            document.title = main.children.item(0).innerHTML + " - " + main.children.item(1).innerHTML
-            document.querySelector("html").lang = lang
-
-            if (scrollTo != "top") document.querySelector("#" + scrollTo).scrollIntoView({ block: "center", inline: "center" })
-
-            fetch("./pages/" + lang + "/sidebar.md").then(res => {
+            fetch("./pages/" + lang + "/" + page + ".md").then(res => {
                 if (res.status != 404) {
                     return res.text()
                 } else {
-                    return ""
+                    return fetch("./pages/" + lang + "/language.json").then(res => {
+                        if (res.status != 404) {
+                            return fetch("./pages/en/" + page + ".md").then(res => {
+                                if (res.status == 404) {
+                                    return fetch("./pages/" + lang + "/404-notfound.md").then(res => {
+                                        if (res.status != 404) {
+                                            return res.text()
+                                        } else {
+                                            return fetch("./pages/en/404-notfound.md").then(res => res.text())
+                                        }
+                                    })
+                                } else {
+                                    return fetch("./pages/" + lang + "404-untranslated-language.md").then(res => {
+                                        if (res.status != 404) {
+                                            return res.text()
+                                        } else {
+                                            return fetch("./pages/en/404-untranslated-language.md").then(res => res.text())
+                                        }
+                                    })
+                                }
+                            })
+                        } else {
+                            return fetch("./pages/en/404-untranslated-language.md").then(res => res.text())
+                        }
+                    })
                 }
             }).then(markdown => {
-                var sidebar = document.getElementById("sidebar")
-                sidebar.innerHTML = marked.parse(markdown)
-                fixLinks(sidebar)
+                function fixLinks(parent) {
+                    for (var index = 0; index < parent.children.length; index++) {
+                        var child = parent.children.item(index)
 
-                var header = 0
+                        if (child.tagName == "A") {
+                            var href = child.getAttribute("href")
 
-                /*for (var index = 0; index < sidebar.children.length; index++) {
-                    var element = sidebar.children.item(index)
-
-                    if (element.tagName == "H3") {
-                        header = index
-
-                        element.classList.add("dropdown")
-
-                        element.addEventListener("click", event => {
-                            if (!event.srcElement.classList.contains("open")) {
-                                event.srcElement.classList.add("open")
-                            } else {
-                                event.srcElement.classList.remove("open")
+                            if (href.startsWith("./")) {
+                                child.href = "./?page=" + href.replace("./", "").split("#")[0] + "&lang=" + lang + (href.replace("./", "").split("#")[1] != undefined ? "&scroll=" + href.replace("./", "").split("#")[1] : "")
+                                child.target = "_parent"
                             }
-                        })
-                    } else if (element.tagName == "P" && header != 0) {
-                        element.remove()
-                        element.classList.add("dropdown-element")
-                        sidebar.children.item(header).appendChild(element)
+                        }
 
-                        index--
+                        fixLinks(child)
                     }
-                }*/
-            })
-        })
+                }
 
-        fetch("./pages/languages.json").then(res => res.json()).then(languages => {
+                var main = document.getElementById("main")
+                main.innerHTML = marked.parse(markdown)
+                fixLinks(main)
+
+                document.title = main.children.item(0).innerHTML + " - " + main.children.item(1).innerHTML
+                document.querySelector("html").lang = lang
+
+                if (scrollTo != null && scrollTo != "top") document.querySelector("#" + scrollTo).scrollIntoView({ block: "center", inline: "center" })
+
+                fetch("./pages/" + lang + "/sidebar.md").then(res => {
+                    if (res.status != 404) {
+                        return res.text()
+                    } else {
+                        return ""
+                    }
+                }).then(markdown => {
+                    var sidebar = document.getElementById("sidebar")
+                    sidebar.innerHTML = marked.parse(markdown)
+                    fixLinks(sidebar)
+
+                    var header = 0
+
+                    /*for (var index = 0; index < sidebar.children.length; index++) {
+                        var element = sidebar.children.item(index)
+    
+                        if (element.tagName == "H3") {
+                            header = index
+    
+                            element.classList.add("dropdown")
+    
+                            element.addEventListener("click", event => {
+                                if (!event.srcElement.classList.contains("open")) {
+                                    event.srcElement.classList.add("open")
+                                } else {
+                                    event.srcElement.classList.remove("open")
+                                }
+                            })
+                        } else if (element.tagName == "P" && header != 0) {
+                            element.remove()
+                            element.classList.add("dropdown-element")
+                            sidebar.children.item(header).appendChild(element)
+    
+                            index--
+                        }
+                    }*/
+                })
+            })
+
             var languagelist = document.getElementById("language")
 
             var index = 0
