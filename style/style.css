@@ -2,22 +2,22 @@
 
 html {
     --background-color: radial-gradient(#555555 25%, #444444 75%);
-    --forground-color: #6e6e6e;
+    --forground-color: #6b6b6b;
 
     --border-color: #333333;
     --border-thickness: 3px;
     --border-radius: 20px;
 
-    --dropdown-color: #5c5c5c;
+    /* --dropdown-color: #5c5c5c;
     --dropdown-border-color: #333333;
     --dropdown-border-thickness: 2.5px;
-    --dropdown-border-radius: 14px;
+    --dropdown-border-radius: 14px; */
 
     --text-font: "Roboto Slab";
     --text-color: #fcfcfc;
 
-    --link-color: #001aff;
-    --link-hover-color: #0015d1;
+    --link-color: #1726ff;
+    --link-hover-color: #000dc9;
 }
 
 html,
@@ -29,12 +29,10 @@ body {
     width: 100%;
     height: 100%;
 
+    background: var(--background-color);
+
     font-family: var(--text-font), sans-serif;
     color: var(--text-color);
-}
-
-html {
-    background: var(--background-color);
 }
 
 #main {
@@ -45,20 +43,6 @@ html {
     width: 55%;
 
     margin: 3% 1% 3% 1%;
-    padding: 2%;
-
-    float: left;
-    text-align: center;
-}
-
-#page-contents {
-    background: var(--forground-color);
-    border: var(--border-thickness) solid var(--border-color);
-    border-radius: var(--border-radius);
-
-    width: 10%;
-
-    margin: 3% 3% 3% 1%;
     padding: 2%;
 
     float: left;
@@ -82,7 +66,7 @@ html {
 
 #sidebar {
     width: 100%;
-    height: 88%;
+    height: 90%;
 
     margin: 0%;
     padding: 0%;
@@ -90,7 +74,7 @@ html {
     overflow-y: auto;
 }
 
-.dropdown {
+/* .dropdown {
     background: var(--dropdown-color);
 
     border: var(--dropdown-border-thickness) solid var(--dropdown-border-color);
@@ -106,30 +90,14 @@ html {
 
 .dropdown.open .dropdown-element {
     display: block;
-}
+} */
 
 #language {
-    width: 96%;
+    width: 75%;
     height: 4%;
 
-    margin: 2% 0%;
+    margin: 12% 0% 0% 0%;
     padding: 0%;
-}
-
-h1 {
-    font-size: 50px;
-}
-
-h2 {
-    font-size: 40px;
-}
-
-h3 {
-    font-size: 24px;
-}
-
-h4 {
-    font-size: 18px;
 }
 
 p,
@@ -154,4 +122,28 @@ a:hover {
 
 a:active {
     color: var(--link-color)
+}
+
+h1,
+h1 p,
+h1 a {
+    font-size: 50px;
+}
+
+h2,
+h2 p,
+h2 a {
+    font-size: 40px;
+}
+
+h3,
+h3 p,
+h3 a {
+    font-size: 24px;
+}
+
+h4,
+h4 p,
+h4 a {
+    font-size: 18px;
 }
