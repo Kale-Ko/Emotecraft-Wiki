@@ -9,15 +9,14 @@
 
 [Downloads](./downloads)
 
-[Installing on Fabric](./install-fabric)\
-[Installing on Forge](./install-forge)\
+[Installing on Forge/Fabric](./install-client)\
 [Installing on a Server](./install-server)
 
 ### Using Emotecraft
 
 [Playing Emotes](./playing-emotes)\
 [Mod Config](./mod-config)\
-[Setting the Emote Wheel](./setting-emote-wheel)
+[Setting the Fast-choose Wheel](./setting-fast-choose-wheel)
 
 [Downloading Custom Emotes](./download-emotes)\
 [Installing Custom Emotes](./install-emotes)
