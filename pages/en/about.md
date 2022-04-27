@@ -10,6 +10,6 @@ It supports Forge and Fabric and is usually pretty quick to update to new versio
 
 Downloads can be found [here](./downloads)
 
-<stan style="color: yellow;">**Important Note:**</stan> The mod or plugin must also be installed on the server to be able to see others emotes.
+<span style="color: yellow;">**Important Note:**</span> The mod or plugin must also be installed on the server to be able to see others emotes.
 
 Different mod loaders (Forge/Fabric) are also fully compatible with each other and the plugins, however different versions may not be (eg. 2.1.4 might not work with 2.1.1)
