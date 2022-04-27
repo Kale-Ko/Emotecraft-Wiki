@@ -17,10 +17,9 @@
     <meta property="og:locale" content="en">
 
     <meta name="description" content="The home of the official Emotecraft wiki.">
-    <meta name="keywords" content="Emotecraft, Wiki, Minecraft, Mod, Fabric, FabricMC">
+    <meta name="keywords" content="Emotecraft, Emote, Emotes, Wiki, Minecraft, MC, Mod, Forge, ForgeMC, Fabric, FabricMC">
     <meta name="robots" content="all">
     <link rel="license" href="https://github.com/Kale-Ko/Emotecraft-Wiki/blob/master/LICENSE">
-    <meta name="theme-color" content="#6e6e6e">
 </head>
 
 <body>
@@ -35,16 +34,17 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jitbit/HtmlSanitizer@master/HtmlSanitizer.js"></script>
     <script>
         var search = new URLSearchParams(window.location.search)
         var page = search.get("page") || null
         var lang = search.get("lang") || null
-        var scrollTo = search.get("scroll") || null
+        var scrollElement = search.get("scroll") || null
 
         fetch("./pages/languages.json").then(res => res.json()).then(languages => {
             if (lang == null) {
                 navigator.languages.forEach(language => {
-                    if (languages.includes(language)) {
+                    if (lang == null && languages.includes(language)) {
                         lang = language
                     }
                 })
@@ -56,6 +56,8 @@
 
             if (search.get("page") == null || search.get("lang") == null) {
                 window.location.replace("./?page=" + (page || "home") + "&lang=" + (lang || "en"))
+
+                return
             }
 
             fetch("./pages/" + lang + "/" + page + ".md").then(res => {
@@ -74,11 +76,11 @@
                                         }
                                     })
                                 } else {
-                                    return fetch("./pages/" + lang + "404-untranslated-language.md").then(res => {
+                                    return fetch("./pages/" + lang + "404-untranslated-page.md").then(res => {
                                         if (res.status != 404) {
                                             return res.text()
                                         } else {
-                                            return fetch("./pages/en/404-untranslated-language.md").then(res => res.text())
+                                            return fetch("./pages/en/404-untranslated-page.md").then(res => res.text())
                                         }
                                     })
                                 }
@@ -107,13 +109,13 @@
                 }
 
                 var main = document.getElementById("main")
-                main.innerHTML = marked.parse(markdown)
+                main.innerHTML = HtmlSanitizer.SanitizeHtml(marked.parse(markdown))
                 fixLinks(main)
 
                 document.title = main.children.item(0).innerHTML + " - " + main.children.item(1).innerHTML
                 document.querySelector("html").lang = lang
 
-                if (scrollTo != null && scrollTo != "top") document.querySelector("#" + scrollTo).scrollIntoView({ block: "center", inline: "center" })
+                if (scrollElement != null && scrollElement != "top") document.querySelector("#" + scrollElement).scrollIntoView({ block: "center", inline: "center" })
 
                 fetch("./pages/" + lang + "/sidebar.md").then(res => {
                     if (res.status != 404) {
@@ -123,7 +125,7 @@
                     }
                 }).then(markdown => {
                     var sidebar = document.getElementById("sidebar")
-                    sidebar.innerHTML = marked.parse(markdown)
+                    sidebar.innerHTML = HtmlSanitizer.SanitizeHtml(marked.parse(markdown))
                     fixLinks(sidebar)
 
                     var header = 0
@@ -176,7 +178,7 @@
             languagelist.addEventListener("change", event => {
                 lang = languagelist.value
 
-                window.location.replace("./?page=" + page + "&lang=" + lang)
+                window.location.replace("./?page=" + page + "&lang=" + lang + (scrollElement != null ? "&scroll=" + scrollElement : ""))
             })
         })
     </script>
