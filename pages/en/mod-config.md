@@ -45,7 +45,7 @@ Show hidden config - ON/OFF - Default OFF - Wether to show the hidden config sec
 
 Note you must have "Show hidden config" enabled to see these config options
 
-Load emotes on logical server - ON/OFF - Default ON for server OFF for client - Weather or not to load emotes on the server <stan style="color: yellow;">**(KEEP THIS OFF FOR CLIENTS)**</stan>\
+Load emotes on logical server - ON/OFF - Default ON for server OFF for client - Weather or not to load emotes on the server <span style="color: yellow;">**(KEEP THIS OFF FOR CLIENTS)**</span>\
 Never remove bad icon - ON/OFF - Default OFF - Weather or not to never remove invalid emote icons\
 Export built in - ON/OFF - Default OFF - Weather or not to export built in emotes when you run an emotes export\
 Hide "no server" warning - ON/OFF - Default ON - Weather or not to hind the "No server" warning you might get on some older forge versions
