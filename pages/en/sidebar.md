@@ -26,4 +26,6 @@
 [Creating Emotes With Blender](./create-emotes-blender)\
 [Creating Music for Emotes](./creating-music)
 
+[A Helpful Feature](./helpful-feature)
+
 [Sharing Emotes](./sharing-emotes)
