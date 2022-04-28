@@ -32,5 +32,5 @@
 
 ### Contributing to Emotecraft
 
-[Translating the Mod](./translating-mod)
+[Translating the Mod](./translating-mod)\
 [Translating/Contributing to the Wiki](./translating-wiki)
