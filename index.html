@@ -34,7 +34,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/jitbit/HtmlSanitizer@master/HtmlSanitizer.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jitbit/HtmlSanitizer/HtmlSanitizer.js"></script>
     <script>
         var search = new URLSearchParams(window.location.search)
         var page = search.get("page") || null
@@ -109,7 +109,7 @@
                 }
 
                 var main = document.getElementById("main")
-                main.innerHTML = HtmlSanitizer.SanitizeHtml(marked.parse(markdown))
+                main.innerHTML = HtmlSanitizer.SanitizeHtml(marked.parse(markdown, { gfm: true, mangle: false, smartLists: true, smartypants: true }))
                 fixLinks(main)
 
                 document.title = main.children.item(0).innerHTML + " - " + main.children.item(1).innerHTML
@@ -125,7 +125,7 @@
                     }
                 }).then(markdown => {
                     var sidebar = document.getElementById("sidebar")
-                    sidebar.innerHTML = HtmlSanitizer.SanitizeHtml(marked.parse(markdown))
+                    sidebar.innerHTML = HtmlSanitizer.SanitizeHtml(marked.parse(markdown, { gfm: true, mangle: false, smartLists: true, smartypants: true }))
                     fixLinks(sidebar)
 
                     var header = 0
