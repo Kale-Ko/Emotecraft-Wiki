@@ -29,3 +29,8 @@
 [A Helpful Feature](./a-helpful-feature)
 
 [Sharing Emotes](./sharing-emotes)
+
+### Contributing to Emotecraft
+
+[Translating the Mod](./translating-mod)
+[Translating/Contributing to the Wiki](./translating-wiki)
