@@ -12,10 +12,11 @@ Then you are going to need the blender model, either with or without bend suppor
 Once you have blender installed open the model. You should be greeted with a readme, make sure to read it.\
 To get started switch to the animation tab. You can move and rotate any of the joints how you want and add keyframes.
 
-When you are done switch to the export tab. Here you will see a script with a few variables you can edit. You can change the emoteName, emoteDescription, and author to whatever you want. If you want the emote to loop you can set loop to true and set the return tick to the tick you would like it to loop on/return to\
+When you are done or would like to test your emote switch to the export tab. Here you will see a script with a few variables you can edit. You can change the emoteName, emoteDescription, and author to whatever you want. If you want the emote to loop you can set loop to true and set the return tick to the tick you would like it to loop on/return to\
 When you are done click the play/run button. This will generate an emote.json in the same place as the blend file.
 
-Next see [Installing Custom Emotes](./install-emotes) to install the emote you created.
+Next see [Installing Custom Emotes](./install-emotes) to install the emote you created.\
+If you are testing your emote a lot it is recommended you use [The Helpful Feature](./helpful-feature) but if you want you can still install it every time
 
 If you want you can add an icon for your emote, just put the image in the emotes folder as `{nameofemotefile}.png`
 You can also add music to your emotes. See [here](./creating-music)
