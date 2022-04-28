@@ -16,7 +16,7 @@ See [Playing Emotes](./playing-emotes)
 
 ### How do I make an emote?
 
-See the [Blender Tutorial](./create-emotes-blender)
+See the [Blender Tutorial](./creating-emotes-blender)
 
 ### Where do I put the custom emotes?
 

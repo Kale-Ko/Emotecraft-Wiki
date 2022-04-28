@@ -16,7 +16,7 @@ When you are done or would like to test your emote switch to the export tab. Her
 When you are done click the play/run button. This will generate an emote.json in the same place as the blend file.
 
 Next see [Installing Custom Emotes](./install-emotes) to install the emote you created.\
-If you are testing your emote a lot it is recommended you use [The Helpful Feature](./helpful-feature) but if you want you can still install it every time
+If you are testing your emote a lot it is recommended you use [The Helpful Feature](./a-helpful-feature) but if you want you can still install it every time
 
 If you want you can add an icon for your emote, just put the image in the emotes folder as `{nameofemotefile}.png`
 You can also add music to your emotes. See [here](./creating-music)
