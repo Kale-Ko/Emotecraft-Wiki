@@ -2,7 +2,7 @@
 
 ## Creating Emotes With Blender
 
-**This requires basic knowledge of how to move and rotate blender object as well as use keyframes in blender.** For help with this see [this](https://docs.blender.org/manual/en/latest/scene_layout/object/editing/transform/introduction.html) and [this](https://docs.blender.org/manual/en/latest/animation/keyframes/introduction.html)
+**This requires basic knowledge of how to move and rotate objects as well as use keyframes in blender.** For help with this see [this](https://docs.blender.org/manual/en/latest/scene_layout/object/editing/transform/introduction.html) and [this](https://docs.blender.org/manual/en/latest/animation/keyframes/introduction.html)
 
 To start you are going to need [Blender](https://www.blender.org/download/).
 If you need help installing it see [this](https://docs.blender.org/manual/en/latest/getting_started/installing/index.html)

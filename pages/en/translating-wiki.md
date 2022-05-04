@@ -15,7 +15,7 @@ If you would like to translate a page open up the pages dirrectory and then what
 
 If the language you would like to translate does not already exist then you must create it yourself along with a language.json file (See [this](https://github.com/Kale-Ko/Emotecraft-Wiki/blob/master/pages/en/language.json))\
 You must also add the language code to the [languages.json](https://github.com/Kale-Ko/Emotecraft-Wiki/blob/master/pages/languages.json) file\
-(Note you must translate home and sidebar at least because the page relies on those)
+**(Note you must also translate home and sidebar at least because the page relies on those)**
 
 Next you gotta pick a page to translate. Once you have you can either copy the file to the new language folder or create a new file with the same name.\
 Then you can translate it.
