@@ -117,7 +117,7 @@
 
                 if (scrollElement != null && scrollElement != "top" && document.querySelector("#" + scrollElement) != null) document.querySelector("#" + scrollElement).scrollIntoView({ block: "center", inline: "center" })
 
-                fetch("./pages/" + lang + "/_sidebar.md").then(res => {
+                fetch("./pages/" + lang + "/sidebar.md").then(res => {
                     if (res.status != 404) {
                         return res.text()
                     } else {
