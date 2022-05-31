@@ -1,5 +1,5 @@
-<meta charset="UTF-8">
 <!DOCTYPE html>
+<meta charset="UTF-8">
 <html lang="en" prefix="og: https://ogp.me/ns#">
 
 <head>
@@ -27,7 +27,13 @@
         <div id="navbar">
             <div id="sidebar"></div>
 
-            <select id="language"></select>
+            <div id="settings">
+                <select id="language"></select>
+
+                <button id="darkmode">
+                    <img src="./assets/darkmode.png" width="24" height="24">
+                </button>
+            </div>
         </div>
 
         <div id="main"></div>
@@ -41,145 +47,271 @@
         var lang = search.get("lang") || null
         var scrollElement = search.get("scroll") || null
 
-        fetch("./pages/languages.json").then(res => res.json()).then(languages => {
-            if (lang == null) {
-                navigator.languages.forEach(language => {
-                    if (lang == null && languages.includes(language)) {
-                        lang = language
-                    }
-                })
+        console.groupCollapsed("Fetching version info.")
 
-                if (lang == null) {
-                    lang = "en"
-                }
-            }
-
-            if (search.get("page") == null || search.get("lang") == null) {
-                window.location.replace("./?page=" + (page || "home") + "&lang=" + (lang || "en"))
-
-                return
-            }
-
-            fetch("./pages/" + lang + "/" + page + ".md").then(res => {
-                if (res.status != 404) {
-                    return res.text()
-                } else {
-                    return fetch("./pages/" + lang + "/language.json").then(res => {
-                        if (res.status != 404) {
-                            return fetch("./pages/en/" + page + ".md").then(res => {
-                                if (res.status == 404) {
-                                    return fetch("./pages/" + lang + "/404-notfound.md").then(res => {
-                                        if (res.status != 404) {
-                                            return res.text()
-                                        } else {
-                                            return fetch("./pages/en/404-notfound.md").then(res => res.text())
-                                        }
+        function fetchWithCache(url, opts) {
+            return new Promise(async (resolve, reject) => {
+                caches.open("cache").then(cache => {
+                    cache.match(url).then(cached => {
+                        if (cached == null) {
+                            fetch(url, opts).then(res => {
+                                cache.put(url, res).then(() => {
+                                    cache.match(url).then(cached => {
+                                        resolve(cached)
                                     })
-                                } else {
-                                    return fetch("./pages/" + lang + "404-untranslated-page.md").then(res => {
-                                        if (res.status != 404) {
-                                            return res.text()
-                                        } else {
-                                            return fetch("./pages/en/404-untranslated-page.md").then(res => res.text())
-                                        }
-                                    })
-                                }
+                                })
                             })
                         } else {
-                            return fetch("./pages/en/404-untranslated-language.md").then(res => res.text())
+                            resolve(cached)
                         }
                     })
+                })
+            })
+        }
+
+        fetch("./pages/version.json").then(res => res.json()).then(versions => {
+            console.log("Lastest version is " + versions.version + ".")
+
+            var lastVersion = 0
+
+            document.cookie.split(';').forEach(cookie => {
+                if (cookie.trim().startsWith("lastVersion=")) {
+                    lastVersion = parseInt(cookie.trim().substring(12, cookie.length))
                 }
-            }).then(markdown => {
-                function fixLinks(parent) {
-                    for (var index = 0; index < parent.children.length; index++) {
-                        var child = parent.children.item(index)
+            })
 
-                        if (child.tagName == "A") {
-                            var href = child.getAttribute("href")
+            document.cookie = "lastVersion=" + lastVersion + "; max-age=31536000; secure=false"
 
-                            if (href.startsWith("./")) {
-                                child.href = "./?page=" + href.replace("./", "").split("#")[0] + "&lang=" + lang + (href.replace("./", "").split("#")[1] != undefined ? "&scroll=" + href.replace("./", "").split("#")[1] : "")
-                                child.target = "_parent"
-                            }
+            console.log("Current version is " + lastVersion + ".")
+
+            console.groupEnd()
+
+            if (versions.version > lastVersion) {
+                console.log("Cache out of date, refreshing.")
+
+                caches.open("cache").then(cache => {
+                    cache.keys().then(keys => {
+                        keys.forEach(key => {
+                            cache.delete(key)
+                        })
+                    })
+                })
+
+                lastVersion = versions.version
+
+                document.cookie = "lastVersion=" + lastVersion + "; max-age=31536000; secure=false"
+            }
+
+            console.groupCollapsed("Fetching languages.")
+
+            fetchWithCache("./pages/languages.json").then(res => res.json()).then(languages => {
+                console.log("Languages are " + JSON.stringify(languages) + ".")
+
+                console.groupEnd()
+
+                if (lang == null) {
+                    navigator.languages.forEach(language => {
+                        if (lang == null && languages.includes(language)) {
+                            lang = language
                         }
+                    })
 
-                        fixLinks(child)
+                    if (lang == null) {
+                        lang = "en"
                     }
                 }
 
-                var main = document.getElementById("main")
-                main.innerHTML = HtmlSanitizer.SanitizeHtml(marked.parse(markdown, { gfm: true, mangle: false, smartLists: true, smartypants: true }))
-                fixLinks(main)
+                if (search.get("page") == null || search.get("lang") == null) {
+                    window.location.replace("./?page=" + (page || "home") + "&lang=" + (lang || "en"))
 
-                document.title = main.children.item(0).innerHTML + " - " + main.children.item(1).innerHTML
-                document.querySelector("html").lang = lang
+                    return
+                }
 
-                if (scrollElement != null && scrollElement != "top" && document.querySelector("#" + scrollElement) != null) document.querySelector("#" + scrollElement).scrollIntoView({ block: "center", inline: "center" })
+                console.groupCollapsed("Fetching page \"" + page + "\" in language \"" + lang + "\".")
 
-                fetch("./pages/" + lang + "/sidebar.md").then(res => {
+                fetchWithCache("./pages/" + lang + "/" + page + ".md").then(res => {
                     if (res.status != 404) {
+                        console.log("Successfully fetched page.")
+
                         return res.text()
                     } else {
-                        return ""
+                        return fetchWithCache("./pages/" + lang + "/language.json").then(res => {
+                            if (res.status != 404) {
+                                return fetchWithCache("./pages/en/" + page + ".md").then(res => {
+                                    if (res.status == 404) {
+                                        return fetchWithCache("./pages/" + lang + "/404-notfound.md").then(res => {
+                                            if (res.status != 404) {
+                                                console.log("Page \"" + page + "\" does not exist.")
+
+                                                return res.text()
+                                            } else {
+                                                return fetchWithCache("./pages/en/404-notfound.md").then(res => res.text())
+                                            }
+                                        })
+                                    } else {
+                                        return fetchWithCache("./pages/" + lang + "404-untranslated-page.md").then(res => {
+                                            if (res.status != 404) {
+                                                console.log("Page \"" + page + "\" is not translated into language \"" + lang + "\".")
+
+                                                return res.text()
+                                            } else {
+                                                return fetchWithCache("./pages/en/404-untranslated-page.md").then(res => res.text())
+                                            }
+                                        })
+                                    }
+                                })
+                            } else {
+                                console.log("Langauge \"" + lang + "\" does not exist.")
+
+                                return fetchWithCache("./pages/en/404-untranslated-language.md").then(res => res.text())
+                            }
+                        })
                     }
                 }).then(markdown => {
-                    var sidebar = document.getElementById("sidebar")
-                    sidebar.innerHTML = HtmlSanitizer.SanitizeHtml(marked.parse(markdown, { gfm: true, mangle: false, smartLists: true, smartypants: true }))
-                    fixLinks(sidebar)
+                    console.groupEnd()
 
-                    var header = 0
+                    console.log("Displaying page.")
 
-                    /*for (var index = 0; index < sidebar.children.length; index++) {
-                        var element = sidebar.children.item(index)
+                    function fixLinks(parent) {
+                        for (var index = 0; index < parent.children.length; index++) {
+                            var child = parent.children.item(index)
 
-                        if (element.tagName == "H3") {
-                            header = index
+                            if (child.tagName == "A") {
+                                var href = child.getAttribute("href")
 
-                            element.classList.add("dropdown")
+                                if (href.startsWith("./")) {
+                                    child.href = "./?page=" + href.replace("./", "").split("#")[0] + "&lang=" + lang + (href.replace("./", "").split("#")[1] != undefined ? "&scroll=" + href.replace("./", "").split("#")[1] : "")
+                                    child.target = "_parent"
+                                }
+                            }
 
-                            element.addEventListener("click", event => {
-                                if (!event.srcElement.classList.contains("open")) {
-                                    event.srcElement.classList.add("open")
+                            fixLinks(child)
+                        }
+                    }
+
+                    HtmlSanitizer.AllowedAttributes.id = true
+                    HtmlSanitizer.AllowedAttributes.class = true
+
+                    var main = document.getElementById("main")
+                    main.innerHTML = HtmlSanitizer.SanitizeHtml(marked.parse(markdown, { gfm: true, mangle: false, smartLists: true, smartypants: true }))
+                    fixLinks(main)
+
+                    document.title = main.children.item(0).innerHTML + " - " + main.children.item(1).innerHTML
+                    document.querySelector("html").lang = lang
+
+                    if (scrollElement != null && scrollElement != "top" && document.querySelector("#" + scrollElement) != null) document.querySelector("#" + scrollElement).scrollIntoView({ block: "center", inline: "center" })
+
+                    console.groupCollapsed("Fetching sidebar in language \"" + lang + "\".")
+
+                    fetchWithCache("./pages/" + lang + "/sidebar.md").then(res => {
+                        if (res.status != 404) {
+                            console.log("Successfully fetched sidebar.")
+
+                            return res.text()
+                        } else {
+                            console.log("Sidebar is not translated into language \"" + lang + "\".")
+
+                            return ""
+                        }
+                    }).then(markdown => {
+                        console.groupEnd()
+
+                        console.log("Displaying sidebar.")
+
+                        var sidebar = document.getElementById("sidebar")
+                        sidebar.innerHTML = HtmlSanitizer.SanitizeHtml(marked.parse(markdown, { gfm: true, mangle: false, smartLists: true, smartypants: true }))
+                        fixLinks(sidebar)
+
+                        var header = 0
+
+                        /*for (var index = 0; index < sidebar.children.length; index++) {
+                            var element = sidebar.children.item(index)
+    
+                            if (element.tagName == "H3") {
+                                header = index
+    
+                                element.classList.add("dropdown")
+    
+                                element.addEventListener("click", event => {
+                                    if (!event.srcElement.classList.contains("open")) {
+                                        event.srcElement.classList.add("open")
+                                    } else {
+                                        event.srcElement.classList.remove("open")
+                                    }
+                                })
+                            } else if (element.tagName == "P" && header != 0) {
+                                element.remove()
+                                element.classList.add("dropdown-element")
+                                sidebar.children.item(header).appendChild(element)
+    
+                                index--
+                            }
+                        }*/
+
+                        console.groupCollapsed("Displaying language list.")
+
+                        var languagelist = document.getElementById("language")
+
+                        var index = 0
+                        function next() {
+                            console.log("Fetching language info for \"" + languages[index] + "\".")
+
+                            fetchWithCache("./pages/" + languages[index] + "/language.json").then(res => res.json()).then(language => {
+                                var option = document.createElement("option")
+                                option.value = language.code
+                                option.innerHTML = language.name + " (" + language.status + ")"
+
+                                languagelist.appendChild(option)
+
+                                if (lang == language.code) languagelist.value = language.code
+
+                                if (index < languages.length - 1) {
+                                    index++
+
+                                    next()
                                 } else {
-                                    event.srcElement.classList.remove("open")
+                                    console.groupEnd()
                                 }
                             })
-                        } else if (element.tagName == "P" && header != 0) {
-                            element.remove()
-                            element.classList.add("dropdown-element")
-                            sidebar.children.item(header).appendChild(element)
-
-                            index--
                         }
-                    }*/
-                })
-            })
-
-            var languagelist = document.getElementById("language")
-
-            var index = 0
-            function next() {
-                fetch("./pages/" + languages[index] + "/language.json").then(res => res.json()).then(language => {
-                    var option = document.createElement("option")
-                    option.value = language.code
-                    option.innerHTML = language.name + " (" + language.status + ")"
-                    languagelist.appendChild(option)
-                    if (lang == language.code) languagelist.value = language.code
-
-                    if (index < languages.length - 1) {
-                        index++
                         next()
-                    }
+
+                        languagelist.addEventListener("change", event => {
+                            lang = languagelist.value
+
+                            console.log("Switching to language \"" + lang + "\".")
+
+                            window.location.replace("./?page=" + page + "&lang=" + lang + (scrollElement != null ? "&scroll=" + scrollElement : ""))
+                        })
+                    })
                 })
-            }
-            next()
-
-            languagelist.addEventListener("change", event => {
-                lang = languagelist.value
-
-                window.location.replace("./?page=" + page + "&lang=" + lang + (scrollElement != null ? "&scroll=" + scrollElement : ""))
             })
+        })
+
+        var darkmode = false
+
+        document.cookie.split(';').forEach(cookie => {
+            if (cookie.trim().startsWith("darkmode=")) {
+                darkmode = cookie.trim().substring(9, cookie.length) == "true"
+            }
+        })
+
+        document.cookie = "darkmode=" + darkmode + "; max-age=31536000; secure=false"
+
+        if (darkmode) {
+            document.querySelector("html").classList.add("darkmode")
+        }
+
+        document.getElementById("darkmode").addEventListener("click", () => {
+            if (document.querySelector("html").classList.contains("darkmode")) {
+                document.querySelector("html").classList.remove("darkmode")
+            } else {
+                document.querySelector("html").classList.add("darkmode")
+            }
+
+            console.log("Switching darkmode " + (document.querySelector("html").classList.contains("darkmode") ? "on" : "off") + ".")
+
+            document.cookie = "darkmode=" + document.querySelector("html").classList.contains("darkmode") + "; max-age=31536000; secure=false"
         })
     </script>
 </body>
