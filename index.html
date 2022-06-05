@@ -226,12 +226,12 @@
 
                         /*for (var index = 0; index < sidebar.children.length; index++) {
                             var element = sidebar.children.item(index)
-    
+
                             if (element.tagName == "H3") {
                                 header = index
-    
+
                                 element.classList.add("dropdown")
-    
+
                                 element.addEventListener("click", event => {
                                     if (!event.srcElement.classList.contains("open")) {
                                         event.srcElement.classList.add("open")
@@ -243,7 +243,7 @@
                                 element.remove()
                                 element.classList.add("dropdown-element")
                                 sidebar.children.item(header).appendChild(element)
-    
+
                                 index--
                             }
                         }*/
@@ -288,7 +288,7 @@
             })
         })
 
-        var darkmode = false
+        var darkmode = true
 
         document.cookie.split(';').forEach(cookie => {
             if (cookie.trim().startsWith("darkmode=")) {
