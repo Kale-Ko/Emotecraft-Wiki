@@ -1,9 +1,15 @@
 version = 1
 
 [[analyzers]]
-name = "javascript"
+name = "secrets"
 enabled = true
 
 [[analyzers]]
-name = "secrets"
+name = "javascript"
 enabled = true
+
+  [analyzers.meta]
+  environment = [
+    "browser",
+    "nodejs"
+  ]
