@@ -2,7 +2,7 @@
 
 html {
     --background-color: radial-gradient(#ffffff 25%, #e0e0e0 75%);
-    --forground-color: #f7f7f7;
+    --foreground-color: #f7f7f7;
 
     --border-color: #d1d1d1;
     --border-thickness: 3px;
@@ -22,7 +22,7 @@ html {
 
 html.darkmode {
     --background-color: radial-gradient(#555555 25%, #444444 75%);
-    --forground-color: #6b6b6b;
+    --foreground-color: #6b6b6b;
 
     --border-color: #333333;
 
@@ -48,7 +48,7 @@ body {
 }
 
 #main {
-    background: var(--forground-color);
+    background: var(--foreground-color);
     border: var(--border-thickness) solid var(--border-color);
     border-radius: var(--border-radius);
 
@@ -62,7 +62,7 @@ body {
 }
 
 #navbar {
-    background: var(--forground-color);
+    background: var(--foreground-color);
     border: var(--border-thickness) solid var(--border-color);
     border-radius: var(--border-radius);
 

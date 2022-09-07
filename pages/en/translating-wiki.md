@@ -2,7 +2,7 @@
 
 ## Translating/Contributing to the Wiki
 
-To contribute to the wiki you just need a GitHub acount and some basic knowledge of how to use it.
+To contribute to the wiki you just need a GitHub account and some basic knowledge of how to use it.
 
 To start make a fork of the repository from [here](https://github.com/Kale-Ko/Emotecraft-Wiki/fork).\
 When it finishes you will have a copy of the original repository that you can mess around in.
@@ -11,7 +11,7 @@ If you would like you can clone this new repo locally to your computer to edit i
 
 ### Translating a page
 
-If you would like to translate a page open up the pages dirrectory and then whatever language your would like to translate (All of the directories are two letter language codes)
+If you would like to translate a page open up the pages directory and then whatever language your would like to translate (All of the directories are two letter language codes)
 
 If the language you would like to translate does not already exist then you must create it yourself along with a language.json file (See [this](https://github.com/Kale-Ko/Emotecraft-Wiki/blob/master/pages/en/language.json))\
 You must also add the language code to the [languages.json](https://github.com/Kale-Ko/Emotecraft-Wiki/blob/master/pages/languages.json) file\
@@ -24,9 +24,9 @@ Then you can translate it.
 
 Adding a page is pretty much identical to translating a page except you just create a new file for whatever language you want. (Make sure this file follows close to the the same format as the others)
 
-### Editting a page
+### Editing a page
 
-Editting a page is also pretty simple, just edit whichever page you want to.
+Editing a page is also pretty simple, just edit whichever page you want to.
 
 ### Contributing your changes
 

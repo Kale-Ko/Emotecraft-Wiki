@@ -2,9 +2,7 @@
 
 ## Installing Custom Emotes
 
-To install an emote you simple need to drag the .json or .emotecraft file into the emotes folder.
-
-The emotes folder is located at\
+To install an emote you simple need to drag the .json or .emotecraft file into the emotes folder which is located at
 
 Windows: `C:/Users/{your user}/AppData/Roaming/.minecraft/emotes`\
 Mac: `/Users/{your user}/Library/Application Support/minecraft/emotes`\

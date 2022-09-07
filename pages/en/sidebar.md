@@ -10,13 +10,13 @@
 [Downloads](./downloads)
 
 [Installing on Forge/Fabric](./install-client)\
-[Installing on a Server](./install-server)
+[Installing on a Bukkit/Spigot/Bungee](./install-server)
 
 ### Using Emotecraft
 
 [Playing Emotes](./playing-emotes)\
 [Mod Config](./mod-config)\
-[Setting the Fast-choose Wheel](./setting-fast-choose-wheel)
+[Setting the Emote Wheel](./setting-emote-wheel)
 
 [Downloading Custom Emotes](./download-emotes)\
 [Installing Custom Emotes](./install-emotes)
@@ -30,8 +30,3 @@
 [A Helpful Feature](./a-helpful-feature)
 
 [Sharing Emotes](./sharing-emotes)
-
-### Contributing to Emotecraft
-
-[Translating the Mod](./translating-mod)\
-[Translating/Contributing to the Wiki](./translating-wiki)
