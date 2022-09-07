@@ -75,7 +75,7 @@
             var lastVersion = 0
 
             if (localStorage.getItem("lastVersion" != null)) {
-                lastVersion = parseInt(localStorage.getItem("lastVersion")) || 0
+                lastVersion = parseInt(localStorage.getItem("lastVersion"))
             }
 
             localStorage.setItem("lastVersion", lastVersion)
