@@ -18,7 +18,7 @@
 
     <meta name="description" content="The home of the official Emotecraft wiki.">
     <meta name="keywords" content="Emotecraft, Emote, Emotes, Wiki, Minecraft, MC, Mod, Forge, ForgeMC, Fabric, FabricMC">
-    <meta name="robots" content="all">
+    <meta name="robots" content="index, follow">
     <link rel="license" href="https://github.com/Kale-Ko/Emotecraft-Wiki/blob/master/LICENSE">
 </head>
 
@@ -70,23 +70,21 @@
         }
 
         fetch("./pages/version.json").then(res => res.json()).then(versions => {
-            console.log("Lastest version is " + versions.version + ".")
+            console.log("Latest version is " + versions.version + ".")
 
             var lastVersion = 0
 
-            document.cookie.split(';').forEach(cookie => {
-                if (cookie.trim().startsWith("lastVersion=")) {
-                    lastVersion = parseInt(cookie.trim().substring(12, cookie.length))
-                }
-            })
+            if (localStorage.getItem("lastVersion" != null)) {
+                lastVersion = parseInt(localStorage.getItem("lastVersion")) || 0
+            }
 
-            document.cookie = "lastVersion=" + lastVersion + "; max-age=31536000; secure=false"
+            localStorage.setItem("lastVersion", lastVersion)
 
             console.log("Current version is " + lastVersion + ".")
 
             console.groupEnd()
 
-            if (versions.version > lastVersion) {
+            if (versions.version > lastVersion || versions.version == -1) {
                 console.log("Cache out of date, refreshing.")
 
                 caches.open("cache").then(cache => {
@@ -99,7 +97,7 @@
 
                 lastVersion = versions.version
 
-                document.cookie = "lastVersion=" + lastVersion + "; max-age=31536000; secure=false"
+                localStorage.setItem("lastVersion", lastVersion)
             }
 
             console.groupCollapsed("Fetching languages.")
@@ -161,7 +159,7 @@
                                     }
                                 })
                             } else {
-                                console.log("Langauge \"" + lang + "\" does not exist.")
+                                console.log("Language \"" + lang + "\" does not exist.")
 
                                 return fetchWithCache("./pages/en/404-untranslated-language.md").then(res => res.text())
                             }
@@ -191,6 +189,7 @@
 
                     HtmlSanitizer.AllowedAttributes.id = true
                     HtmlSanitizer.AllowedAttributes.class = true
+                    HtmlSanitizer.AllowedAttributes.download = true
 
                     var main = document.getElementById("main")
                     main.innerHTML = HtmlSanitizer.SanitizeHtml(marked.parse(markdown, { gfm: true, mangle: false, smartLists: true, smartypants: true }))
@@ -198,6 +197,14 @@
 
                     document.title = main.children.item(0).innerHTML + " - " + main.children.item(1).innerHTML
                     document.querySelector("html").lang = lang
+
+                    var downloads = document.querySelectorAll("a.download")
+
+                    downloads.forEach(download => {
+                        fetch(download.href).then(res => res.blob()).then(data => {
+                            download.href = URL.createObjectURL(data)
+                        })
+                    })
 
                     if (scrollElement != null && scrollElement != "top" && document.querySelector("#" + scrollElement) != null) document.querySelector("#" + scrollElement).scrollIntoView({ block: "center", inline: "center" })
 
@@ -288,15 +295,13 @@
             })
         })
 
-        var darkmode = true
+        var darkmode = ("matchMedia" in window ? window.matchMedia("(prefers-color-scheme: dark)").matches : true)
 
-        document.cookie.split(';').forEach(cookie => {
-            if (cookie.trim().startsWith("darkmode=")) {
-                darkmode = cookie.trim().substring(9, cookie.length) == "true"
-            }
-        })
+        if (localStorage.getItem("darkmode") != null) {
+            darkmode = localStorage.getItem("darkmode") == "true"
+        }
 
-        document.cookie = "darkmode=" + darkmode + "; max-age=31536000; secure=false"
+        localStorage.setItem("darkmode", darkmode)
 
         if (darkmode) {
             document.querySelector("html").classList.add("darkmode")
@@ -311,7 +316,7 @@
 
             console.log("Switching darkmode " + (document.querySelector("html").classList.contains("darkmode") ? "on" : "off") + ".")
 
-            document.cookie = "darkmode=" + document.querySelector("html").classList.contains("darkmode") + "; max-age=31536000; secure=false"
+            localStorage.setItem("darkmode", darkmode)
         })
     </script>
 </body>
