@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<meta charset="UTF-8">
 <html lang="en" prefix="og: https://ogp.me/ns#">
 
 <head>
+    <meta charset="UTF-8">
     <title>Emotecraft Wiki</title>
     <link rel="icon" href="./assets/icon.webp">
     <link rel="apple-touch-icon" href="./assets/icon.webp">
@@ -17,27 +17,27 @@
     <meta property="og:locale" content="en">
 
     <meta name="description" content="The home of the official Emotecraft wiki.">
-    <meta name="keywords" content="Emotecraft, Emote, Emotes, Wiki, Minecraft, MC, Mod, Forge, ForgeMC, Fabric, FabricMC">
+    <meta name="keywords" content="Emotecraft, Emote, Emotes, Wiki, Minecraft, MC, Mod, Mods, Forge, ForgeMC, Fabric, FabricMC">
     <meta name="robots" content="index, follow">
     <link rel="license" href="https://github.com/Kale-Ko/Emotecraft-Wiki/blob/master/LICENSE">
 </head>
 
 <body>
-    <div id="content">
+    <main id="content">
         <div id="navbar">
             <div id="sidebar"></div>
 
             <div id="settings">
-                <select id="language"></select>
+                <select id="language" title="Language"></select>
 
-                <button id="darkmode">
-                    <img src="./assets/darkmode.png" width="24" height="24">
+                <button id="darkmode" title="Darkmode">
+                    <img src="./assets/darkmode.png" width="24" height="24" alt="Darkmode">
                 </button>
             </div>
         </div>
 
         <div id="main"></div>
-    </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/jitbit/HtmlSanitizer/HtmlSanitizer.js"></script>
@@ -89,9 +89,9 @@
 
                 caches.open("cache").then(cache => {
                     cache.keys().then(keys => {
-                        keys.forEach(key => {
+                        for (var key of keys) {
                             cache.delete(key)
-                        })
+                        }
                     })
                 })
 
@@ -108,11 +108,11 @@
                 console.groupEnd()
 
                 if (lang == null) {
-                    navigator.languages.forEach(language => {
+                    for (var language of navigator.languages) {
                         if (lang == null && languages.includes(language)) {
                             lang = language
                         }
-                    })
+                    }
 
                     if (lang == null) {
                         lang = "en"
@@ -200,11 +200,11 @@
 
                     var downloads = document.querySelectorAll("a.download")
 
-                    downloads.forEach(download => {
+                    for (var download of downloads) {
                         fetch(download.href).then(res => res.blob()).then(data => {
                             download.href = URL.createObjectURL(data)
                         })
-                    })
+                    }
 
                     if (scrollElement != null && scrollElement != "top" && document.querySelector("#" + scrollElement) != null) document.querySelector("#" + scrollElement).scrollIntoView({ block: "center", inline: "center" })
 
