@@ -1,324 +1,46 @@
 <!DOCTYPE html>
-<html lang="en" prefix="og: https://ogp.me/ns#">
+<html lang="en" class="darkmode" prefix="og: https://ogp.me/ns#">
 
 <head>
     <meta charset="UTF-8">
     <title>Emotecraft Wiki</title>
-    <link rel="icon" href="./assets/icon.webp">
-    <link rel="apple-touch-icon" href="./assets/icon.webp">
-    <link rel="stylesheet" href="./style/style.css">
+    <link rel="icon" href="/assets/icon.webp">
+    <link rel="apple-touch-icon" href="/assets/icon.webp">
+    <link rel="stylesheet" href="/styles/main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:title" content="Emotecraft Wiki">
     <meta property="og:description" content="The home of the official Emotecraft wiki.">
-    <meta property="og:image" content="./assets/icon.webp">
+    <meta property="og:image" content="/assets/icon.webp">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="./">
+    <meta property="og:url" content="https://emotecraft.kosmx.dev/">
     <meta property="og:locale" content="en">
 
     <meta name="description" content="The home of the official Emotecraft wiki.">
-    <meta name="keywords" content="Emotecraft, Emote, Emotes, Wiki, Minecraft, MC, Mod, Mods, Forge, ForgeMC, Fabric, FabricMC">
+    <meta name="keywords" content="Emotecraft, Emote, Emotes, Wiki, Minecraft, MC, Mod, Mods, Forge, ForgeMC, Fabric, FabricMC, Quilt, QuiltMC">
     <meta name="robots" content="index, follow">
     <link rel="license" href="https://github.com/Kale-Ko/Emotecraft-Wiki/blob/master/LICENSE">
 </head>
 
 <body>
-    <main id="content">
-        <div id="navbar">
-            <div id="sidebar"></div>
+    <nav id="navbar">
+        <div id="sidebar"></div>
 
-            <div id="settings">
-                <select id="language" title="Language"></select>
+        <div id="settings">
+            <select id="settings-language" title="Language"></select>
 
-                <button id="darkmode" title="Darkmode">
-                    <img src="./assets/darkmode.png" width="24" height="24" alt="Darkmode">
-                </button>
-            </div>
+            <button id="settings-theme" title="Theme">
+                <img class="lightmode hidden" src="/assets/lightmode.webp" width="24" height="24" alt="Lightmode">
+                <img class="darkmode" src="/assets/darkmode.webp" width="24" height="24" alt="Darkmode">
+            </button>
         </div>
+    </nav>
 
-        <div id="main"></div>
-    </main>
+    <main id="main"></main>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/jitbit/HtmlSanitizer/HtmlSanitizer.js"></script>
-    <script>
-        var search = new URLSearchParams(window.location.search)
-        var page = search.get("page") || null
-        var lang = search.get("lang") || null
-        var scrollElement = search.get("scroll") || null
-
-        console.groupCollapsed("Fetching version info.")
-
-        function fetchWithCache(url, opts) {
-            return new Promise(async (resolve, reject) => {
-                caches.open("cache").then(cache => {
-                    cache.match(url).then(cached => {
-                        if (cached == null) {
-                            fetch(url, opts).then(res => {
-                                cache.put(url, res).then(() => {
-                                    cache.match(url).then(cached => {
-                                        resolve(cached)
-                                    })
-                                })
-                            })
-                        } else {
-                            resolve(cached)
-                        }
-                    })
-                })
-            })
-        }
-
-        fetch("./pages/version.json").then(res => res.json()).then(versions => {
-            console.log("Latest version is " + versions.version + ".")
-
-            var lastVersion = 0
-
-            if (localStorage.getItem("lastVersion" != null)) {
-                lastVersion = parseInt(localStorage.getItem("lastVersion"))
-            }
-
-            localStorage.setItem("lastVersion", lastVersion)
-
-            console.log("Current version is " + lastVersion + ".")
-
-            console.groupEnd()
-
-            if (versions.version > lastVersion || versions.version == -1) {
-                console.log("Cache out of date, refreshing.")
-
-                caches.open("cache").then(cache => {
-                    cache.keys().then(keys => {
-                        for (var key of keys) {
-                            cache.delete(key)
-                        }
-                    })
-                })
-
-                lastVersion = versions.version
-
-                localStorage.setItem("lastVersion", lastVersion)
-            }
-
-            console.groupCollapsed("Fetching languages.")
-
-            fetchWithCache("./pages/languages.json").then(res => res.json()).then(languages => {
-                console.log("Languages are " + JSON.stringify(languages) + ".")
-
-                console.groupEnd()
-
-                if (lang == null) {
-                    for (var language of navigator.languages) {
-                        if (lang == null && languages.includes(language)) {
-                            lang = language
-                        }
-                    }
-
-                    if (lang == null) {
-                        lang = "en"
-                    }
-                }
-
-                if (search.get("page") == null || search.get("lang") == null) {
-                    window.location.replace("./?page=" + (page || "home") + "&lang=" + (lang || "en"))
-
-                    return
-                }
-
-                console.groupCollapsed("Fetching page \"" + page + "\" in language \"" + lang + "\".")
-
-                fetchWithCache("./pages/" + lang + "/" + page + ".md").then(res => {
-                    if (res.status != 404) {
-                        console.log("Successfully fetched page.")
-
-                        return res.text()
-                    } else {
-                        return fetchWithCache("./pages/" + lang + "/language.json").then(res => {
-                            if (res.status != 404) {
-                                return fetchWithCache("./pages/en/" + page + ".md").then(res => {
-                                    if (res.status == 404) {
-                                        return fetchWithCache("./pages/" + lang + "/404-notfound.md").then(res => {
-                                            if (res.status != 404) {
-                                                console.log("Page \"" + page + "\" does not exist.")
-
-                                                return res.text()
-                                            } else {
-                                                return fetchWithCache("./pages/en/404-notfound.md").then(res => res.text())
-                                            }
-                                        })
-                                    } else {
-                                        return fetchWithCache("./pages/" + lang + "404-untranslated-page.md").then(res => {
-                                            if (res.status != 404) {
-                                                console.log("Page \"" + page + "\" is not translated into language \"" + lang + "\".")
-
-                                                return res.text()
-                                            } else {
-                                                return fetchWithCache("./pages/en/404-untranslated-page.md").then(res => res.text())
-                                            }
-                                        })
-                                    }
-                                })
-                            } else {
-                                console.log("Language \"" + lang + "\" does not exist.")
-
-                                return fetchWithCache("./pages/en/404-untranslated-language.md").then(res => res.text())
-                            }
-                        })
-                    }
-                }).then(markdown => {
-                    console.groupEnd()
-
-                    console.log("Displaying page.")
-
-                    function fixLinks(parent) {
-                        for (var index = 0; index < parent.children.length; index++) {
-                            var child = parent.children.item(index)
-
-                            if (child.tagName == "A") {
-                                var href = child.getAttribute("href")
-
-                                if (href.startsWith("./")) {
-                                    child.href = "./?page=" + href.replace("./", "").split("#")[0] + "&lang=" + lang + (href.replace("./", "").split("#")[1] != undefined ? "&scroll=" + href.replace("./", "").split("#")[1] : "")
-                                    child.target = "_parent"
-                                }
-                            }
-
-                            fixLinks(child)
-                        }
-                    }
-
-                    HtmlSanitizer.AllowedAttributes.id = true
-                    HtmlSanitizer.AllowedAttributes.class = true
-                    HtmlSanitizer.AllowedAttributes.download = true
-
-                    var main = document.getElementById("main")
-                    main.innerHTML = HtmlSanitizer.SanitizeHtml(marked.parse(markdown, { gfm: true, mangle: false, smartLists: true, smartypants: true }))
-                    fixLinks(main)
-
-                    document.title = main.children.item(0).innerHTML + " - " + main.children.item(1).innerHTML
-                    document.querySelector("html").lang = lang
-
-                    var downloads = document.querySelectorAll("a.download")
-
-                    for (var download of downloads) {
-                        fetch(download.href).then(res => res.blob()).then(data => {
-                            download.href = URL.createObjectURL(data)
-                        })
-                    }
-
-                    if (scrollElement != null && scrollElement != "top" && document.querySelector("#" + scrollElement) != null) document.querySelector("#" + scrollElement).scrollIntoView({ block: "center", inline: "center" })
-
-                    console.groupCollapsed("Fetching sidebar in language \"" + lang + "\".")
-
-                    fetchWithCache("./pages/" + lang + "/sidebar.md").then(res => {
-                        if (res.status != 404) {
-                            console.log("Successfully fetched sidebar.")
-
-                            return res.text()
-                        } else {
-                            console.log("Sidebar is not translated into language \"" + lang + "\".")
-
-                            return ""
-                        }
-                    }).then(markdown => {
-                        console.groupEnd()
-
-                        console.log("Displaying sidebar.")
-
-                        var sidebar = document.getElementById("sidebar")
-                        sidebar.innerHTML = HtmlSanitizer.SanitizeHtml(marked.parse(markdown, { gfm: true, mangle: false, smartLists: true, smartypants: true }))
-                        fixLinks(sidebar)
-
-                        var header = 0
-
-                        /*for (var index = 0; index < sidebar.children.length; index++) {
-                            var element = sidebar.children.item(index)
-
-                            if (element.tagName == "H3") {
-                                header = index
-
-                                element.classList.add("dropdown")
-
-                                element.addEventListener("click", event => {
-                                    if (!event.srcElement.classList.contains("open")) {
-                                        event.srcElement.classList.add("open")
-                                    } else {
-                                        event.srcElement.classList.remove("open")
-                                    }
-                                })
-                            } else if (element.tagName == "P" && header != 0) {
-                                element.remove()
-                                element.classList.add("dropdown-element")
-                                sidebar.children.item(header).appendChild(element)
-
-                                index--
-                            }
-                        }*/
-
-                        console.groupCollapsed("Displaying language list.")
-
-                        var languagelist = document.getElementById("language")
-
-                        var index = 0
-                        function next() {
-                            console.log("Fetching language info for \"" + languages[index] + "\".")
-
-                            fetchWithCache("./pages/" + languages[index] + "/language.json").then(res => res.json()).then(language => {
-                                var option = document.createElement("option")
-                                option.value = language.code
-                                option.innerHTML = language.name + " (" + language.status + ")"
-
-                                languagelist.appendChild(option)
-
-                                if (lang == language.code) languagelist.value = language.code
-
-                                if (index < languages.length - 1) {
-                                    index++
-
-                                    next()
-                                } else {
-                                    console.groupEnd()
-                                }
-                            })
-                        }
-                        next()
-
-                        languagelist.addEventListener("change", event => {
-                            lang = languagelist.value
-
-                            console.log("Switching to language \"" + lang + "\".")
-
-                            window.location.replace("./?page=" + page + "&lang=" + lang + (scrollElement != null ? "&scroll=" + scrollElement : ""))
-                        })
-                    })
-                })
-            })
-        })
-
-        var darkmode = ("matchMedia" in window ? window.matchMedia("(prefers-color-scheme: dark)").matches : true)
-
-        if (localStorage.getItem("darkmode") != null) {
-            darkmode = localStorage.getItem("darkmode") == "true"
-        }
-
-        localStorage.setItem("darkmode", darkmode)
-
-        if (darkmode) {
-            document.querySelector("html").classList.add("darkmode")
-        }
-
-        document.getElementById("darkmode").addEventListener("click", () => {
-            if (document.querySelector("html").classList.contains("darkmode")) {
-                document.querySelector("html").classList.remove("darkmode")
-            } else {
-                document.querySelector("html").classList.add("darkmode")
-            }
-
-            console.log("Switching darkmode " + (document.querySelector("html").classList.contains("darkmode") ? "on" : "off") + ".")
-
-            localStorage.setItem("darkmode", darkmode)
-        })
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    <script src="/scripts/main.js"></script>
 </body>
 
 </html>
