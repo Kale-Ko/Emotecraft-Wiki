@@ -1,3 +1,29 @@
 {
-    "version": 2
+    "version": 3,
+    "languages": [
+        {
+            "code": "en",
+            "name": "English",
+            "status": "Full"
+        }
+    ],
+    "files": [
+        "/pages/{language}/sidebar.md",
+        "/pages/{language}/home.md",
+        "/pages/{language}/about.md",
+        "/pages/{language}/faq.md",
+        "/pages/{language}/downloads.md",
+        "/pages/{language}/install-client.md",
+        "/pages/{language}/install-server.md",
+        "/pages/{language}/playing-emotes.md",
+        "/pages/{language}/mod-config.md",
+        "/pages/{language}/setting-emote-wheel.md",
+        "/pages/{language}/download-emotes.md",
+        "/pages/{language}/install-emotes.md",
+        "/pages/{language}/creating-emotes-blender.md",
+        "/pages/{language}/creating-emotes-blockbench.md",
+        "/pages/{language}/creating-music.md",
+        "/pages/{language}/a-helpful-feature.md",
+        "/pages/{language}/sharing-emotes.md"
+    ]
 }

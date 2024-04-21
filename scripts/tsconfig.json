@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "lib": [
+            "dom",
+            "esnext"
+        ],
+        "module": "esnext",
+        "strict": true,
+        "alwaysStrict": true,
+        "strictBindCallApply": true,
+        "allowJs": true,
+        "checkJs": true,
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noUncheckedIndexedAccess": true,
+        "noFallthroughCasesInSwitch": true,
+        "sourceMap": true
+    },
+    "include": [
+        "**/*"
+    ]
+}
