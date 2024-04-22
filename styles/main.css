@@ -26,6 +26,23 @@ html.darkmode {
     --link-hover-color: #000dc9;
 }
 
+/*
+    Loading
+*/
+
+body.loading {
+    display: none;
+    opacity: 0%;
+}
+
+body.loaded {
+    animation: fade-in 1s ease-in 0s;
+}
+
+/*
+    Content
+*/
+
 html,
 head,
 body {
@@ -38,7 +55,7 @@ body {
     background: var(--background-color);
     color: var(--text-color);
 
-    font-family: var(--text-font), sans-serif;
+    font-family: var(--text-font), serif;
 }
 
 #main {
@@ -184,4 +201,18 @@ h4 a {
 
 .hidden {
     display: none;
+}
+
+/*
+    Animations
+*/
+
+@keyframes fade-in {
+    0% {
+        opacity: 0%;
+    }
+
+    100% {
+        opacity: 100%;
+    }
 }
