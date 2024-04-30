@@ -12,7 +12,7 @@ If you would like to use commands on Bukkit/Spigot you will also need [this](htt
 
 The most up to date versions for all loaders + Bungee and Velocity can be found on [Github](https://github.com/KosmX/emotes/releases).
 
-Next see [Installing on Forge/Fabric](./install-client) to install the mod on your client, or [Installing on Bukkit/Spigot/Bungee](./install-server) for a server.
+Next see [Installing on Forge/Fabric](%install-client) to install the mod on your client, or [Installing on Bukkit/Spigot/Bungee](%install-server) for a server.
 
 ### Tool Downloads
 

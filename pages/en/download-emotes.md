@@ -10,4 +10,4 @@ In the Discord server find the emote you want from [#emote-list](https://discord
 
 In the emote archive find the emote you want (eg. <https://github.com/KosmX/Emotecraft-emotes/blob/master/emotes/Twerk.json>). Then right click the "Raw" button and hit Save as.
 
-Next see [Installing Custom Emotes](./install-emotes) to install them from there.
+Next see [Installing Custom Emotes](%install-emotes) to install them from there.
