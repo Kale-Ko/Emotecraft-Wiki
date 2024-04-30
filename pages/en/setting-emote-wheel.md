@@ -2,7 +2,7 @@
 
 ## Setting the Emote Wheel
 
-To start you are going to want to open the config, See [Opening the Config](./mod-config#opening-the-config).
+To start you are going to want to open the config, See [Opening the Config](%mod-config#opening-the-config).
 
 To assign an emote to a slot just click an emote and then the slot you want to put it in.
 

@@ -1,32 +1,32 @@
 ## Pages
 
-[Home](./home)\
-[About](./about)\
-[FAQ](./faq)\
+[Home](%home)\
+[About](%about)\
+[FAQ](%faq)\
 [Discord](https://discord.com/invite/38e348fxVS)
 
 ### Installing Emotecraft
 
-[Downloads](./downloads)
+[Downloads](%downloads)
 
-[Installing on Forge/Fabric](./install-client)\
-[Installing on a Bukkit/Spigot/Bungee](./install-server)
+[Installing on Forge/Fabric](%install-client)\
+[Installing on a Bukkit/Spigot/Bungee](%install-server)
 
 ### Using Emotecraft
 
-[Playing Emotes](./playing-emotes)\
-[Mod Config](./mod-config)\
-[Setting the Emote Wheel](./setting-emote-wheel)
+[Playing Emotes](%playing-emotes)\
+[Mod Config](%mod-config)\
+[Setting the Emote Wheel](%setting-emote-wheel)
 
-[Downloading Custom Emotes](./download-emotes)\
-[Installing Custom Emotes](./install-emotes)
+[Downloading Custom Emotes](%download-emotes)\
+[Installing Custom Emotes](%install-emotes)
 
 ### Creating Emotes
 
-[Creating Emotes With Blender](./creating-emotes-blender)\
-[Creating Emotes With Blockbench](./creating-emotes-blockbench)\
-[Creating Music for Emotes](./creating-music)
+[Creating Emotes With Blender](%creating-emotes-blender)\
+[Creating Emotes With Blockbench](%creating-emotes-blockbench)\
+[Creating Music for Emotes](%creating-music)
 
-[A Helpful Feature](./a-helpful-feature)
+[A Helpful Feature](%a-helpful-feature)
 
-[Sharing Emotes](./sharing-emotes)
+[Sharing Emotes](%sharing-emotes)

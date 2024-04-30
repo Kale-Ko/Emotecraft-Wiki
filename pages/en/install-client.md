@@ -3,7 +3,7 @@
 ## Installing on Forge/Fabric
 
 To install the mod you first need to download the jar.\
-You can find it [here](./downloads). **(Make sure you download the correct version)**
+You can find it [here](%downloads). **(Make sure you download the correct version)**
 
 If you are installing it on fabric you will also need Fabric Api ([Modrinth](https://modrinth.com/mod/fabric-api/versions), [Curseforge](https://www.curseforge.com/minecraft/mc-mods/fabric-api/files)),\
 and it is recommended you use Mod Menu ([Modrinth](https://modrinth.com/mod/modmenu/versions), [Curseforge](https://www.curseforge.com/minecraft/mc-mods/modmenu/files)).

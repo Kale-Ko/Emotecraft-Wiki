@@ -6,11 +6,11 @@
 
 To open the config screen on Fabric if you have Mod Menu installed go to the title screen and click the "Mods" button. Then find "Emotecraft" in the list and click the little sliders button.
 
-To open the config screen click the play emotes key (See [Playing Emotes](./playing-emotes)). Then click "All emote" and finally "Config Emotes".
+To open the config screen click the play emotes key (See [Playing Emotes](%playing-emotes)). Then click "All emote" and finally "Config Emotes".
 
 ### Setting the Emote Wheel
 
-See [Setting the Emote Wheel](./setting-emote-wheel).
+See [Setting the Emote Wheel](%setting-emote-wheel).
 
 ### Mod config
 
