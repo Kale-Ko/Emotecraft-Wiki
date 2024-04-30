@@ -21,8 +21,7 @@
         "noUnusedParameters": true,
         "noPropertyAccessFromIndexSignature": true,
         "noUncheckedIndexedAccess": true,
-        "noFallthroughCasesInSwitch": true,
-        "sourceMap": true
+        "noFallthroughCasesInSwitch": true
     },
     "include": [
         "**/*.ts"
