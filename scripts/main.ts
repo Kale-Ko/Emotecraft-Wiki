@@ -222,6 +222,13 @@ interface VersionInfo {
             let body: HTMLBodyElement = document.querySelector("body") as HTMLBodyElement;
             body.classList.remove("loading");
             body.classList.add("loaded");
+
+            if (window.location.hash.length > 0) {
+                let scrollElement = document.querySelector(window.location.hash)
+                if (scrollElement != undefined) {
+                    scrollElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            }
         }
 
         if (versionInfo.languages.filter(a => a.code == language).length > 0) {
