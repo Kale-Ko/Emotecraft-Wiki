@@ -29,7 +29,7 @@ async function fetchJson(url: string | URL, options?: RequestInit): Promise<any 
     }
 }
 
-async function cacheMiss(url: string | URL): Promise<boolean> {
+async function isCacheMiss(url: string | URL): Promise<boolean> {
     let cache: Cache = await caches.open(cacheName);
     let cachedPage: Response | undefined = await cache.match(url);
 
@@ -136,7 +136,7 @@ interface VersionInfo {
             marked.use({ gfm: true });
             marked.use(markedGfmHeadingId.gfmHeadingId({ prefix: "" }));
             marked.use({
-                walkTokens: (token: any) => {
+                walkTokens: (token: any): void => {
                     if (token.type != "link") {
                         return;
                     }
@@ -155,6 +155,33 @@ interface VersionInfo {
             let markdown = marked.parse(data);
             let sanitized = DOMPurify.sanitize(markdown);
             element.innerHTML = sanitized;
+
+            {
+                let downloads: NodeListOf<HTMLAnchorElement> = element.querySelectorAll("a.download");
+
+                for (let i = 0; i < downloads.length; i++) {
+                    let element: HTMLAnchorElement = downloads.item(i);
+
+                    let disabled = false;
+
+                    element.addEventListener("click", (event: MouseEvent): void => {
+                        if (disabled) {
+                            return;
+                        }
+
+                        event.preventDefault();
+
+                        fetch(element.href).then((response: Response): Promise<Blob> => response.blob()).then((blob: Blob): void => {
+                            let url = URL.createObjectURL(blob);
+
+                            element.href = url;
+
+                            disabled = true;
+                            element.click();
+                        })
+                    });
+                }
+            }
         }
 
         async function displayPage(data: string): Promise<void> {
@@ -258,7 +285,7 @@ interface VersionInfo {
                 for (let language of versionInfo.languages) {
                     let url: string = file.replace("{language}", language.code);
 
-                    if (await cacheMiss(url)) {
+                    if (await isCacheMiss(url)) {
                         console.log("Caching " + url + "...");
 
                         await fetchTextCached(url);
@@ -267,7 +294,7 @@ interface VersionInfo {
             } else {
                 let url: string = file;
 
-                if (await cacheMiss(url)) {
+                if (await isCacheMiss(url)) {
                     console.log("Caching " + url + "...");
 
                     await fetchTextCached(url);
