@@ -82,7 +82,7 @@ async function fetchJsonCached(url, options) {
         await caches.delete(cacheName);
     }
     console.groupEnd();
-    await (async () => {
+    async function loadPage() {
         console.group("Loading page...");
         let parameters = new URLSearchParams(window.location.search);
         let language = parameters.get("language");
@@ -117,6 +117,23 @@ async function fetchJsonCached(url, options) {
             let markdown = marked.parse(data);
             let sanitized = DOMPurify.sanitize(markdown);
             element.innerHTML = sanitized;
+            {
+                let links = element.querySelectorAll("a");
+                for (let i = 0; i < links.length; i++) {
+                    let element = links.item(i);
+                    if (element.classList.contains("download")) {
+                        continue;
+                    }
+                    let href = element.getAttribute("href");
+                    if (href.startsWith("/")) {
+                        element.addEventListener("click", (event) => {
+                            event.preventDefault();
+                            history.pushState(null, "", href);
+                            loadPage();
+                        });
+                    }
+                }
+            }
             {
                 let downloads = element.querySelectorAll("a.download");
                 for (let i = 0; i < downloads.length; i++) {
@@ -210,8 +227,8 @@ async function fetchJsonCached(url, options) {
             await markDone();
         }
         console.groupEnd();
-    })();
-    await (async () => {
+    }
+    async function runBackgroundCache() {
         console.group("Starting background caching...");
         for (let file of versionInfo.files) {
             if (file.includes("{language}")) {
@@ -232,5 +249,11 @@ async function fetchJsonCached(url, options) {
             }
         }
         console.groupEnd();
-    })();
+    }
+    window.addEventListener("popstate", (event) => {
+        console.log(event);
+        loadPage();
+    });
+    await loadPage();
+    runBackgroundCache();
 })();

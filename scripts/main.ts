@@ -115,7 +115,7 @@ interface VersionInfo {
 
     console.groupEnd();
 
-    await (async () => {
+    async function loadPage() {
         console.group("Loading page...");
 
         let parameters: URLSearchParams = new URLSearchParams(window.location.search);
@@ -155,6 +155,30 @@ interface VersionInfo {
             let markdown = marked.parse(data);
             let sanitized = DOMPurify.sanitize(markdown);
             element.innerHTML = sanitized;
+
+            {
+                let links: NodeListOf<HTMLAnchorElement> = element.querySelectorAll("a");
+
+                for (let i = 0; i < links.length; i++) {
+                    let element: HTMLAnchorElement = links.item(i);
+
+                    if (element.classList.contains("download")) {
+                        continue;
+                    }
+
+                    let href: string = element.getAttribute("href")!!;
+
+                    if (href.startsWith("/")) {
+                        element.addEventListener("click", (event: MouseEvent): void => {
+                            event.preventDefault();
+
+                            history.pushState(null, "", href);
+
+                            loadPage();
+                        });
+                    }
+                }
+            }
 
             {
                 let downloads: NodeListOf<HTMLAnchorElement> = element.querySelectorAll("a.download");
@@ -275,9 +299,9 @@ interface VersionInfo {
         }
 
         console.groupEnd();
-    })();
+    }
 
-    await (async () => {
+    async function runBackgroundCache() {
         console.group("Starting background caching...");
 
         for (let file of versionInfo.files) {
@@ -303,5 +327,14 @@ interface VersionInfo {
         }
 
         console.groupEnd();
-    })();
+    }
+
+    window.addEventListener("popstate", (event: PopStateEvent): void => {
+        console.log(event);
+
+        loadPage();
+    });
+
+    await loadPage();
+    runBackgroundCache();
 })();
