@@ -301,6 +301,67 @@ interface VersionInfo {
         console.groupEnd();
     }
 
+    async function loadSettings() {
+        console.group("Loading settings...");
+
+        let settingsElement = document.querySelector("#settings") as HTMLDivElement;
+
+        let languageElement = settingsElement.querySelector("#settings-language") as HTMLSelectElement;
+        let themeElement = settingsElement.querySelector("#settings-theme") as HTMLButtonElement;
+
+        for (let language of versionInfo.languages) {
+            let optionElement = document.createElement("option");
+            optionElement.value = language.code;
+            optionElement.innerText = language.name + " (" + language.status + ")";
+            languageElement.appendChild(optionElement);
+        }
+
+        languageElement.addEventListener("change", (): void => {
+            console.log("Switching language to " + languageElement.value);
+
+            let url: URL = new URL(window.location.href);
+            url.searchParams.set("language", languageElement.value);
+            window.location.replace(url);
+        });
+
+        let html = document.querySelector("html") as HTMLElement;
+        let darkmode = html.classList.contains("darkmode");
+
+        if (localStorage.getItem("darkmode") != null) {
+            darkmode = localStorage.getItem("darkmode") == "true";
+
+            if (darkmode) {
+                html.classList.remove("lightmode")
+                html.classList.add("darkmode")
+            } else {
+                html.classList.remove("darkmode");
+                html.classList.add("lightmode");
+            }
+        }
+
+        localStorage.setItem("darkmode", darkmode ? "true" : "false");
+
+        console.log("Theme is " + (darkmode ? "darkmode" : "lightmode"));
+
+        themeElement.addEventListener("click", (): void => {
+            darkmode = !darkmode;
+
+            if (darkmode) {
+                html.classList.remove("lightmode")
+                html.classList.add("darkmode")
+            } else {
+                html.classList.remove("darkmode");
+                html.classList.add("lightmode");
+            }
+
+            localStorage.setItem("darkmode", darkmode ? "true" : "false");
+
+            console.log("Switching theme to " + (darkmode ? "darkmode" : "lightmode"));
+        });
+
+        console.groupEnd();
+    }
+
     async function runBackgroundCache() {
         console.group("Starting background caching...");
 
@@ -329,12 +390,11 @@ interface VersionInfo {
         console.groupEnd();
     }
 
-    window.addEventListener("popstate", (event: PopStateEvent): void => {
-        console.log(event);
-
+    window.addEventListener("popstate", (): void => {
         loadPage();
     });
 
+    await loadSettings();
     await loadPage();
     runBackgroundCache();
 })();
