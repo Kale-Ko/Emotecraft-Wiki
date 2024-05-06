@@ -22,7 +22,7 @@ async function fetchJson(url, options) {
         return null;
     }
 }
-async function cacheMiss(url) {
+async function isCacheMiss(url) {
     let cache = await caches.open(cacheName);
     let cachedPage = await cache.match(url);
     return cachedPage == undefined;
@@ -117,6 +117,25 @@ async function fetchJsonCached(url, options) {
             let markdown = marked.parse(data);
             let sanitized = DOMPurify.sanitize(markdown);
             element.innerHTML = sanitized;
+            {
+                let downloads = element.querySelectorAll("a.download");
+                for (let i = 0; i < downloads.length; i++) {
+                    let element = downloads.item(i);
+                    let disabled = false;
+                    element.addEventListener("click", (event) => {
+                        if (disabled) {
+                            return;
+                        }
+                        event.preventDefault();
+                        fetch(element.href).then((response) => response.blob()).then((blob) => {
+                            let url = URL.createObjectURL(blob);
+                            element.href = url;
+                            disabled = true;
+                            element.click();
+                        });
+                    });
+                }
+            }
         }
         async function displayPage(data) {
             await displayMarkdown(document.querySelector("#main"), data);
@@ -198,7 +217,7 @@ async function fetchJsonCached(url, options) {
             if (file.includes("{language}")) {
                 for (let language of versionInfo.languages) {
                     let url = file.replace("{language}", language.code);
-                    if (await cacheMiss(url)) {
+                    if (await isCacheMiss(url)) {
                         console.log("Caching " + url + "...");
                         await fetchTextCached(url);
                     }
@@ -206,7 +225,7 @@ async function fetchJsonCached(url, options) {
             }
             else {
                 let url = file;
-                if (await cacheMiss(url)) {
+                if (await isCacheMiss(url)) {
                     console.log("Caching " + url + "...");
                     await fetchTextCached(url);
                 }
