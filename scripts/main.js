@@ -228,6 +228,53 @@ async function fetchJsonCached(url, options) {
         }
         console.groupEnd();
     }
+    async function loadSettings() {
+        console.group("Loading settings...");
+        let settingsElement = document.querySelector("#settings");
+        let languageElement = settingsElement.querySelector("#settings-language");
+        let themeElement = settingsElement.querySelector("#settings-theme");
+        for (let language of versionInfo.languages) {
+            let optionElement = document.createElement("option");
+            optionElement.value = language.code;
+            optionElement.innerText = language.name + " (" + language.status + ")";
+            languageElement.appendChild(optionElement);
+        }
+        languageElement.addEventListener("change", () => {
+            console.log("Switching language to " + languageElement.value);
+            let url = new URL(window.location.href);
+            url.searchParams.set("language", languageElement.value);
+            window.location.replace(url);
+        });
+        let html = document.querySelector("html");
+        let darkmode = html.classList.contains("darkmode");
+        if (localStorage.getItem("darkmode") != null) {
+            darkmode = localStorage.getItem("darkmode") == "true";
+            if (darkmode) {
+                html.classList.remove("lightmode");
+                html.classList.add("darkmode");
+            }
+            else {
+                html.classList.remove("darkmode");
+                html.classList.add("lightmode");
+            }
+        }
+        localStorage.setItem("darkmode", darkmode ? "true" : "false");
+        console.log("Theme is " + (darkmode ? "darkmode" : "lightmode"));
+        themeElement.addEventListener("click", () => {
+            darkmode = !darkmode;
+            if (darkmode) {
+                html.classList.remove("lightmode");
+                html.classList.add("darkmode");
+            }
+            else {
+                html.classList.remove("darkmode");
+                html.classList.add("lightmode");
+            }
+            localStorage.setItem("darkmode", darkmode ? "true" : "false");
+            console.log("Switching theme to " + (darkmode ? "darkmode" : "lightmode"));
+        });
+        console.groupEnd();
+    }
     async function runBackgroundCache() {
         console.group("Starting background caching...");
         for (let file of versionInfo.files) {
@@ -250,10 +297,10 @@ async function fetchJsonCached(url, options) {
         }
         console.groupEnd();
     }
-    window.addEventListener("popstate", (event) => {
-        console.log(event);
+    window.addEventListener("popstate", () => {
         loadPage();
     });
+    await loadSettings();
     await loadPage();
     runBackgroundCache();
 })();
