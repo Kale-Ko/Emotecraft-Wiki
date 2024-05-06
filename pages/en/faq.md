@@ -49,11 +49,11 @@ If it is a BlockBench emote make sure you are using version 2.1 or newer.
 
 #### Update Forge to the latest version
 
-<img src="/assets/images/faq/forge-error.png" alt="Mod File emotecraft-for-MC1.16.5-2.0.1-forge.jar needs language provider javafml:36.1 or above to load" width="400" height="40">
+<img src="/assets/images/faq/forge-error.webp" alt="Mod File emotecraft-for-MC1.16.5-2.0.1-forge.jar needs language provider javafml:36.1 or above to load" width="400" height="40">
 
 #### Install/Update [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api/files)
 
-<img src="/assets/images/faq/fabric-error.png" alt="Could not find required mod: emotecraft requires {fabric @ [0.16.2]}" width="400" height="35">
+<img src="/assets/images/faq/fabric-error.webp" alt="Could not find required mod: emotecraft requires {fabric @ [0.16.2]}" width="400" height="35">
 
 ### Where can I get more help?
 
