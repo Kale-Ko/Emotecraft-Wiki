@@ -165,6 +165,12 @@ async function fetchJsonCached(url, options) {
             let body = document.querySelector("body");
             body.classList.remove("loading");
             body.classList.add("loaded");
+            if (window.location.hash.length > 0) {
+                let scrollElement = document.querySelector(window.location.hash);
+                if (scrollElement != undefined) {
+                    scrollElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            }
         }
         if (versionInfo.languages.filter(a => a.code == language).length > 0) {
             let pageData = await fetchTextCached("/pages/" + language + "/" + page + ".md");
