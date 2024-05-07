@@ -12,7 +12,8 @@ See [Playing Emotes](%playing-emotes).
 
 ### How can I play an emote while moving?
 
-In the mod options, set Stop emote at this speed threshold to the max.
+In the mod config, set "Stop emote at this speed threshold" to the max.\
+See also [Mod Config](%mod-config)
 
 ### Where can I find more custom emotes?
 
@@ -43,18 +44,18 @@ If you want to try it and you need help, contact `KosmX#7620` on Discord.
 
 Make sure Load emotes on logical server (In the hidden config) is off.\
 Make sure the emotes are valid jsons (If you open them up in notepad the first line should be a {).\
-If it is a BlockBench emote make sure you are using version 2.1 or newer.
+If it is a Blockbench emote make sure you are using version 2.1 or newer.
 
 ### What is if I got this error
+
+#### Install/Update [Fabric API](https://modrinth.com/mod/fabric-api/versions)
+
+<img src="/assets/images/faq/fabric-error.webp" alt="Could not find required mod: emotecraft requires {fabric @ [0.16.2]}" width="400" height="35">
 
 #### Update Forge to the latest version
 
 <img src="/assets/images/faq/forge-error.webp" alt="Mod File emotecraft-for-MC1.16.5-2.0.1-forge.jar needs language provider javafml:36.1 or above to load" width="400" height="40">
 
-#### Install/Update [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api/files)
-
-<img src="/assets/images/faq/fabric-error.webp" alt="Could not find required mod: emotecraft requires {fabric @ [0.16.2]}" width="400" height="35">
-
 ### Where can I get more help?
 
-You can get more help in the [Discord server](https://discord.com/invite/PSW2t4Ujm6).
+You can get more help in the [Discord server](https://discord.com/invite/38e348fxVS).
