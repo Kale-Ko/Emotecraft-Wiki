@@ -9,8 +9,8 @@
 
 [Downloads](%downloads)
 
-[Installing on Forge/Fabric](%install-client)\
-[Installing on a Bukkit/Spigot/Bungee](%install-server)
+[Installing on Fabric/Forge](%install-client)\
+[Installing on a Spigot/Bukkit](%install-server)
 
 ### Using Emotecraft
 
