@@ -252,12 +252,13 @@ async function fetchJsonCached(url, options) {
             console.log("Switching language to " + languageElement.value);
             let url = new URL(window.location.href);
             url.searchParams.set("language", languageElement.value);
-            window.location.replace(url);
+            history.pushState(null, "", url);
+            loadPage();
         });
         let html = document.querySelector("html");
         let darkmode = html.classList.contains("darkmode");
         if (localStorage.getItem("darkmode") !== null) {
-            darkmode = localStorage.getItem("darkmode") === "true";
+            darkmode = localStorage.getItem("darkmode") == "true";
             if (darkmode) {
                 html.classList.remove("lightmode");
                 html.classList.add("darkmode");
@@ -267,7 +268,7 @@ async function fetchJsonCached(url, options) {
                 html.classList.add("lightmode");
             }
         }
-        localStorage.setItem("darkmode", darkmode ? "true" : "false");
+        localStorage.setItem("darkmode", (darkmode ? "true" : "false"));
         console.log("Theme is " + (darkmode ? "darkmode" : "lightmode"));
         themeElement.addEventListener("click", () => {
             darkmode = !darkmode;

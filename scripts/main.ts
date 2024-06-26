@@ -47,13 +47,13 @@ async function fetchTextCached(url: string | URL, options?: RequestInit): Promis
             await cache.put(url, response);
 
             let responseCopy: Response = await cache.match(url) as Response;
-            let text: string = await responseCopy.text()
+            let text: string = await responseCopy.text();
             return text;
         } else {
             return null;
         }
     } else {
-        let text: string = await cachedPage.text()
+        let text: string = await cachedPage.text();
         return text;
     }
 }
@@ -69,13 +69,13 @@ async function fetchJsonCached(url: string | URL, options?: RequestInit): Promis
             await cache.put(url, response);
 
             let responseCopy: Response = await cache.match(url) as Response;
-            let json: any = await responseCopy.json()
+            let json: any = await responseCopy.json();
             return json;
         } else {
             return null;
         }
     } else {
-        let json: any = await cachedPage.json()
+        let json: any = await cachedPage.json();
         return json;
     }
 }
@@ -202,7 +202,7 @@ interface VersionInfo {
 
                             disabled = true;
                             element.click();
-                        })
+                        });
                     });
                 }
             }
@@ -227,7 +227,7 @@ interface VersionInfo {
             body.classList.add("loaded");
 
             if (window.location.hash.length > 0) {
-                let scrollElement: HTMLElement | null = document.querySelector(window.location.hash)
+                let scrollElement: HTMLElement | null = document.querySelector(window.location.hash);
                 if (scrollElement !== null) {
                     scrollElement.scrollIntoView({ behavior: "smooth", block: "center" });
                 }
@@ -314,13 +314,13 @@ interface VersionInfo {
     async function loadSettings() {
         console.group("Loading settings...");
 
-        let settingsElement = document.querySelector("#settings") as HTMLDivElement;
+        let settingsElement: HTMLDivElement = document.querySelector("#settings") as HTMLDivElement;
 
-        let languageElement = settingsElement.querySelector("#settings-language") as HTMLSelectElement;
-        let themeElement = settingsElement.querySelector("#settings-theme") as HTMLButtonElement;
+        let languageElement: HTMLSelectElement = settingsElement.querySelector("#settings-language") as HTMLSelectElement;
+        let themeElement: HTMLButtonElement = settingsElement.querySelector("#settings-theme") as HTMLButtonElement;
 
         for (let language of versionInfo.languages) {
-            let optionElement = document.createElement("option");
+            let optionElement: HTMLOptionElement = document.createElement("option") as HTMLOptionElement;
             optionElement.value = language.code;
             optionElement.innerText = language.name + " (" + language.status + ")";
             languageElement.appendChild(optionElement);
@@ -331,25 +331,28 @@ interface VersionInfo {
 
             let url: URL = new URL(window.location.href);
             url.searchParams.set("language", languageElement.value);
-            window.location.replace(url);
+
+            history.pushState(null, "", url);
+
+            loadPage();
         });
 
-        let html = document.querySelector("html") as HTMLElement;
-        let darkmode = html.classList.contains("darkmode");
+        let html: HTMLHtmlElement = document.querySelector("html") as HTMLHtmlElement;
+        let darkmode: boolean = html.classList.contains("darkmode");
 
         if (localStorage.getItem("darkmode") !== null) {
-            darkmode = localStorage.getItem("darkmode") === "true";
+            darkmode = localStorage.getItem("darkmode") == "true";
 
             if (darkmode) {
-                html.classList.remove("lightmode")
-                html.classList.add("darkmode")
+                html.classList.remove("lightmode");
+                html.classList.add("darkmode");
             } else {
                 html.classList.remove("darkmode");
                 html.classList.add("lightmode");
             }
         }
 
-        localStorage.setItem("darkmode", darkmode ? "true" : "false");
+        localStorage.setItem("darkmode", (darkmode ? "true" : "false"));
 
         console.log("Theme is " + (darkmode ? "darkmode" : "lightmode"));
 
@@ -357,8 +360,8 @@ interface VersionInfo {
             darkmode = !darkmode;
 
             if (darkmode) {
-                html.classList.remove("lightmode")
-                html.classList.add("darkmode")
+                html.classList.remove("lightmode");
+                html.classList.add("darkmode");
             } else {
                 html.classList.remove("darkmode");
                 html.classList.add("lightmode");
