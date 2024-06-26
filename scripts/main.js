@@ -25,12 +25,12 @@ async function fetchJson(url, options) {
 async function isCacheMiss(url) {
     let cache = await caches.open(cacheName);
     let cachedPage = await cache.match(url);
-    return cachedPage == undefined;
+    return cachedPage === undefined;
 }
 async function fetchTextCached(url, options) {
     let cache = await caches.open(cacheName);
     let cachedPage = await cache.match(url);
-    if (cachedPage == undefined) {
+    if (cachedPage === undefined) {
         let response = await fetch(url, options);
         if (response.ok) {
             await cache.put(url, response);
@@ -50,7 +50,7 @@ async function fetchTextCached(url, options) {
 async function fetchJsonCached(url, options) {
     let cache = await caches.open(cacheName);
     let cachedPage = await cache.match(url);
-    if (cachedPage == undefined) {
+    if (cachedPage === undefined) {
         let response = await fetch(url, options);
         if (response.ok) {
             await cache.put(url, response);
@@ -71,12 +71,12 @@ async function fetchJsonCached(url, options) {
     console.group("Loading version info...");
     let currentVersion = null;
     let currentVersionString = localStorage.getItem(cacheVersionKey);
-    if (currentVersionString != null) {
+    if (currentVersionString !== null) {
         currentVersion = parseInt(currentVersionString);
     }
     let versionInfo = await fetchJson("/pages/version.json");
     console.log("Latest version is " + versionInfo.version + ", current version is " + currentVersion + ".");
-    if (currentVersion == null || versionInfo.version > currentVersion) {
+    if (currentVersion === null || versionInfo.version > currentVersion) {
         localStorage.setItem(cacheVersionKey, versionInfo.version.toString());
         console.log("Clearing cache...");
         await caches.delete(cacheName);
@@ -86,11 +86,11 @@ async function fetchJsonCached(url, options) {
         console.group("Loading page...");
         let parameters = new URLSearchParams(window.location.search);
         let language = parameters.get("language");
-        if (language == null) {
+        if (language === null) {
             language = "en";
         }
         let page = parameters.get("page");
-        if (page == null) {
+        if (page === null) {
             page = "home";
         }
         console.log("Selected language is " + language + ".");
@@ -100,7 +100,7 @@ async function fetchJsonCached(url, options) {
             marked.use(markedGfmHeadingId.gfmHeadingId({ prefix: "" }));
             marked.use({
                 walkTokens: (token) => {
-                    if (token.type != "link") {
+                    if (token.type !== "link") {
                         return;
                     }
                     if (!token.href.startsWith("%")) {
@@ -161,24 +161,27 @@ async function fetchJsonCached(url, options) {
             await displayMarkdown(document.querySelector("#sidebar"), data);
         }
         async function markDone() {
-            await document.fonts.load("1ex Roboto Slab"); // Prevent flicker
+            if ("fonts" in document) { // Prevent font flicker
+                await document.fonts.load("1ex Roboto Slab");
+                await document.fonts.load("bold 1ex Roboto Slab");
+            }
             let body = document.querySelector("body");
             body.classList.remove("loading");
             body.classList.add("loaded");
             if (window.location.hash.length > 0) {
                 let scrollElement = document.querySelector(window.location.hash);
-                if (scrollElement != undefined) {
+                if (scrollElement !== null) {
                     scrollElement.scrollIntoView({ behavior: "smooth", block: "center" });
                 }
             }
         }
-        if (versionInfo.languages.filter(a => a.code == language).length > 0) {
+        if (versionInfo.languages.filter(a => a.code === language).length > 0) {
             let pageData = await fetchTextCached("/pages/" + language + "/" + page + ".md");
-            if (pageData != null) {
+            if (pageData !== null) {
                 console.log("Downloaded page...");
                 await displayPage(pageData);
                 let sidebarData = await fetchTextCached("/pages/" + language + "/sidebar.md");
-                if (sidebarData != null) {
+                if (sidebarData !== null) {
                     console.log("Downloaded sidebar...");
                     await displaySidebar(sidebarData);
                 }
@@ -192,12 +195,12 @@ async function fetchJsonCached(url, options) {
             else {
                 console.warn("Failed to find page in language " + language + ".");
                 let pageDataEn = await fetchTextCached("/pages/" + defaultLanguage + "/" + page + ".md");
-                if (pageDataEn != null) {
+                if (pageDataEn !== null) {
                     console.log("Found page in default language.");
                     let pageDataErr = await fetchTextCached("/pages/" + language + "/404-untranslated-page.md");
                     await displayPage(pageDataErr);
                     let sidebarData = await fetchTextCached("/pages/" + language + "/sidebar.md");
-                    if (sidebarData != null) {
+                    if (sidebarData !== null) {
                         console.log("Downloaded sidebar...");
                         await displaySidebar(sidebarData);
                     }
@@ -213,7 +216,7 @@ async function fetchJsonCached(url, options) {
                     let pageDataErr = await fetchTextCached("/pages/" + language + "/404-not-found.md");
                     await displayPage(pageDataErr);
                     let sidebarData = await fetchTextCached("/pages/" + language + "/sidebar.md");
-                    if (sidebarData != null) {
+                    if (sidebarData !== null) {
                         console.log("Downloaded sidebar...");
                         await displaySidebar(sidebarData);
                     }
@@ -253,8 +256,8 @@ async function fetchJsonCached(url, options) {
         });
         let html = document.querySelector("html");
         let darkmode = html.classList.contains("darkmode");
-        if (localStorage.getItem("darkmode") != null) {
-            darkmode = localStorage.getItem("darkmode") == "true";
+        if (localStorage.getItem("darkmode") !== null) {
+            darkmode = localStorage.getItem("darkmode") === "true";
             if (darkmode) {
                 html.classList.remove("lightmode");
                 html.classList.add("darkmode");

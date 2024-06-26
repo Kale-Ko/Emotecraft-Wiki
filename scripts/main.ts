@@ -33,14 +33,14 @@ async function isCacheMiss(url: string | URL): Promise<boolean> {
     let cache: Cache = await caches.open(cacheName);
     let cachedPage: Response | undefined = await cache.match(url);
 
-    return cachedPage == undefined;
+    return cachedPage === undefined;
 }
 
 async function fetchTextCached(url: string | URL, options?: RequestInit): Promise<string | null> {
     let cache: Cache = await caches.open(cacheName);
     let cachedPage: Response | undefined = await cache.match(url);
 
-    if (cachedPage == undefined) {
+    if (cachedPage === undefined) {
         let response: Response = await fetch(url, options);
 
         if (response.ok) {
@@ -62,7 +62,7 @@ async function fetchJsonCached(url: string | URL, options?: RequestInit): Promis
     let cache: Cache = await caches.open(cacheName);
     let cachedPage: Response | undefined = await cache.match(url);
 
-    if (cachedPage == undefined) {
+    if (cachedPage === undefined) {
         let response: Response = await fetch(url, options);
 
         if (response.ok) {
@@ -97,7 +97,7 @@ interface VersionInfo {
 
     let currentVersion: number | null = null;
     let currentVersionString: string | null = localStorage.getItem(cacheVersionKey);
-    if (currentVersionString != null) {
+    if (currentVersionString !== null) {
         currentVersion = parseInt(currentVersionString);
     }
 
@@ -105,7 +105,7 @@ interface VersionInfo {
 
     console.log("Latest version is " + versionInfo.version + ", current version is " + currentVersion + ".");
 
-    if (currentVersion == null || versionInfo.version > currentVersion) {
+    if (currentVersion === null || versionInfo.version > currentVersion) {
         localStorage.setItem(cacheVersionKey, versionInfo.version.toString());
 
         console.log("Clearing cache...");
@@ -121,11 +121,11 @@ interface VersionInfo {
         let parameters: URLSearchParams = new URLSearchParams(window.location.search);
 
         let language: string | null = parameters.get("language");
-        if (language == null) {
+        if (language === null) {
             language = "en";
         }
         let page: string | null = parameters.get("page");
-        if (page == null) {
+        if (page === null) {
             page = "home";
         }
 
@@ -137,7 +137,7 @@ interface VersionInfo {
             marked.use(markedGfmHeadingId.gfmHeadingId({ prefix: "" }));
             marked.use({
                 walkTokens: (token: any): void => {
-                    if (token.type != "link") {
+                    if (token.type !== "link") {
                         return;
                     }
                     if (!token.href.startsWith("%")) {
@@ -152,8 +152,8 @@ interface VersionInfo {
                 }
             });
 
-            let markdown = marked.parse(data);
-            let sanitized = DOMPurify.sanitize(markdown);
+            let markdown: string = marked.parse(data);
+            let sanitized: string = DOMPurify.sanitize(markdown);
             element.innerHTML = sanitized;
 
             {
@@ -186,7 +186,7 @@ interface VersionInfo {
                 for (let i = 0; i < downloads.length; i++) {
                     let element: HTMLAnchorElement = downloads.item(i);
 
-                    let disabled = false;
+                    let disabled: boolean = false;
 
                     element.addEventListener("click", (event: MouseEvent): void => {
                         if (disabled) {
@@ -196,7 +196,7 @@ interface VersionInfo {
                         event.preventDefault();
 
                         fetch(element.href).then((response: Response): Promise<Blob> => response.blob()).then((blob: Blob): void => {
-                            let url = URL.createObjectURL(blob);
+                            let url: string = URL.createObjectURL(blob);
 
                             element.href = url;
 
@@ -217,30 +217,33 @@ interface VersionInfo {
         }
 
         async function markDone(): Promise<void> {
-            await document.fonts.load("1ex Roboto Slab"); // Prevent flicker
+            if ("fonts" in document) {  // Prevent font flicker
+                await document.fonts.load("1ex Roboto Slab");
+                await document.fonts.load("bold 1ex Roboto Slab");
+            }
 
             let body: HTMLBodyElement = document.querySelector("body") as HTMLBodyElement;
             body.classList.remove("loading");
             body.classList.add("loaded");
 
             if (window.location.hash.length > 0) {
-                let scrollElement = document.querySelector(window.location.hash)
-                if (scrollElement != undefined) {
+                let scrollElement: HTMLElement | null = document.querySelector(window.location.hash)
+                if (scrollElement !== null) {
                     scrollElement.scrollIntoView({ behavior: "smooth", block: "center" });
                 }
             }
         }
 
-        if (versionInfo.languages.filter(a => a.code == language).length > 0) {
+        if (versionInfo.languages.filter(a => a.code === language).length > 0) {
             let pageData: string | null = await fetchTextCached("/pages/" + language + "/" + page + ".md");
 
-            if (pageData != null) {
+            if (pageData !== null) {
                 console.log("Downloaded page...");
 
                 await displayPage(pageData);
 
                 let sidebarData: string | null = await fetchTextCached("/pages/" + language + "/sidebar.md");
-                if (sidebarData != null) {
+                if (sidebarData !== null) {
                     console.log("Downloaded sidebar...");
 
                     await displaySidebar(sidebarData);
@@ -256,14 +259,14 @@ interface VersionInfo {
                 console.warn("Failed to find page in language " + language + ".");
 
                 let pageDataEn: string | null = await fetchTextCached("/pages/" + defaultLanguage + "/" + page + ".md");
-                if (pageDataEn != null) {
+                if (pageDataEn !== null) {
                     console.log("Found page in default language.");
 
                     let pageDataErr: string = await fetchTextCached("/pages/" + language + "/404-untranslated-page.md") as string;
                     await displayPage(pageDataErr);
 
                     let sidebarData: string | null = await fetchTextCached("/pages/" + language + "/sidebar.md");
-                    if (sidebarData != null) {
+                    if (sidebarData !== null) {
                         console.log("Downloaded sidebar...");
 
                         await displaySidebar(sidebarData);
@@ -282,7 +285,7 @@ interface VersionInfo {
                     await displayPage(pageDataErr);
 
                     let sidebarData: string | null = await fetchTextCached("/pages/" + language + "/sidebar.md");
-                    if (sidebarData != null) {
+                    if (sidebarData !== null) {
                         console.log("Downloaded sidebar...");
 
                         await displaySidebar(sidebarData);
@@ -334,8 +337,8 @@ interface VersionInfo {
         let html = document.querySelector("html") as HTMLElement;
         let darkmode = html.classList.contains("darkmode");
 
-        if (localStorage.getItem("darkmode") != null) {
-            darkmode = localStorage.getItem("darkmode") == "true";
+        if (localStorage.getItem("darkmode") !== null) {
+            darkmode = localStorage.getItem("darkmode") === "true";
 
             if (darkmode) {
                 html.classList.remove("lightmode")
