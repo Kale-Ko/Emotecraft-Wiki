@@ -7,6 +7,21 @@
     <link rel="icon" href="/assets/icon.webp">
     <link rel="apple-touch-icon" href="/assets/icon.webp">
 
+    <script>
+        let html = document.querySelector("html");
+
+        if (localStorage.getItem("darkmode") !== null) {
+            let darkmode = localStorage.getItem("darkmode") == "true";
+
+            if (darkmode) {
+                html.classList.remove("lightmode");
+                html.classList.add("darkmode");
+            } else {
+                html.classList.remove("darkmode");
+                html.classList.add("lightmode");
+            }
+        }
+    </script>
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto%20Slab:regular,bold">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
