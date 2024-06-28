@@ -133,9 +133,10 @@ interface VersionInfo {
         console.log("Selected page is " + page + ".");
 
         async function displayMarkdown(element: HTMLElement, data: string): Promise<void> {
-            marked.use({ gfm: true });
-            marked.use(markedGfmHeadingId.gfmHeadingId({ prefix: "" }));
-            marked.use({
+            let markedInstance = new marked.Marked();
+            markedInstance.use({ gfm: true });
+            markedInstance.use(markedGfmHeadingId.gfmHeadingId({ prefix: "" }));
+            markedInstance.use({
                 walkTokens: (token: any): void => {
                     if (token.type !== "link") {
                         return;
@@ -152,7 +153,7 @@ interface VersionInfo {
                 }
             });
 
-            let markdown: string = marked.parse(data);
+            let markdown: string = markedInstance.parse(data);
             let sanitized: string = DOMPurify.sanitize(markdown);
             element.innerHTML = sanitized;
 
@@ -210,10 +211,37 @@ interface VersionInfo {
 
         async function displayPage(data: string): Promise<void> {
             await displayMarkdown(document.querySelector("#main") as HTMLElement, data);
+
+            await displayTableOfContents(generateTableOfContents(data));
         }
 
         async function displaySidebar(data: string): Promise<void> {
             await displayMarkdown(document.querySelector("#sidebar") as HTMLElement, data);
+        }
+
+        function generateTableOfContents(data: string): string {
+            let markedInstance = new marked.Marked();
+            markedInstance.use({ gfm: true });
+            markedInstance.use(markedGfmHeadingId.gfmHeadingId({ prefix: "" }));
+            markedInstance.parse(data);
+
+            let tokens: any[] = markedGfmHeadingId.getHeadingList();
+
+            let output: string = "";
+
+            for (let token of tokens) {
+                if (token.level <= 1) {
+                    continue;
+                }
+
+                output += "\t".repeat(token.level - 2) + "* " + "[" + token.text + "]" + "(" + "#" + token.id + ")" + "\n";
+            }
+
+            return output;
+        }
+
+        async function displayTableOfContents(data: string): Promise<void> {
+            await displayMarkdown(document.querySelector("#table-of-contents") as HTMLElement, data);
         }
 
         async function markDone(): Promise<void> {

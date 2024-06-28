@@ -96,9 +96,10 @@ async function fetchJsonCached(url, options) {
         console.log("Selected language is " + language + ".");
         console.log("Selected page is " + page + ".");
         async function displayMarkdown(element, data) {
-            marked.use({ gfm: true });
-            marked.use(markedGfmHeadingId.gfmHeadingId({ prefix: "" }));
-            marked.use({
+            let markedInstance = new marked.Marked();
+            markedInstance.use({ gfm: true });
+            markedInstance.use(markedGfmHeadingId.gfmHeadingId({ prefix: "" }));
+            markedInstance.use({
                 walkTokens: (token) => {
                     if (token.type !== "link") {
                         return;
@@ -114,7 +115,7 @@ async function fetchJsonCached(url, options) {
                     }
                 }
             });
-            let markdown = marked.parse(data);
+            let markdown = markedInstance.parse(data);
             let sanitized = DOMPurify.sanitize(markdown);
             element.innerHTML = sanitized;
             {
@@ -156,9 +157,28 @@ async function fetchJsonCached(url, options) {
         }
         async function displayPage(data) {
             await displayMarkdown(document.querySelector("#main"), data);
+            await displayTableOfContents(generateTableOfContents(data));
         }
         async function displaySidebar(data) {
             await displayMarkdown(document.querySelector("#sidebar"), data);
+        }
+        function generateTableOfContents(data) {
+            let markedInstance = new marked.Marked();
+            markedInstance.use({ gfm: true });
+            markedInstance.use(markedGfmHeadingId.gfmHeadingId({ prefix: "" }));
+            markedInstance.parse(data);
+            let tokens = markedGfmHeadingId.getHeadingList();
+            let output = "";
+            for (let token of tokens) {
+                if (token.level <= 1) {
+                    continue;
+                }
+                output += "\t".repeat(token.level - 2) + "* " + "[" + token.text + "]" + "(" + "#" + token.id + ")" + "\n";
+            }
+            return output;
+        }
+        async function displayTableOfContents(data) {
+            await displayMarkdown(document.querySelector("#table-of-contents"), data);
         }
         async function markDone() {
             if ("fonts" in document) { // Prevent font flicker
