@@ -151,6 +151,7 @@ p,
 a,
 tr {
     font-size: 15px;
+    font-weight: normal;
 
     text-decoration: none;
 }
@@ -169,41 +170,31 @@ a:hover {
 }
 
 h1,
-h1 p,
-h1 a {
-    font-size: 58px;
-
-    font-weight: bold;
-}
-
 h2,
-h2 p,
-h2 a {
-    font-size: 42px;
-
-    font-weight: bold;
-}
-
 h3,
-h3 p,
-h3 a {
-    font-size: 24px;
-
+h4,
+th {
     font-weight: bold;
 }
 
-h4,
-h4 p,
-h4 a {
-    font-size: 18px;
+h1 {
+    font-size: 58px;
+}
 
-    font-weight: bold;
+h2 {
+    font-size: 42px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+h4 {
+    font-size: 18px;
 }
 
 th {
     font-size: 16px;
-
-    font-weight: bold;
 }
 
 /*
@@ -225,5 +216,15 @@ th {
 
     100% {
         opacity: 100%;
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 100%;
+    }
+
+    100% {
+        opacity: 0%;
     }
 }
