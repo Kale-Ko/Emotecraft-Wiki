@@ -227,6 +227,10 @@ th a {
     display: none;
 }
 
+.highlight {
+    animation: highlight 1600ms ease-in-out 400ms;
+}
+
 /*
     Animations
 */
@@ -248,5 +252,22 @@ th a {
 
     100% {
         opacity: 0%;
+    }
+}
+
+@keyframes highlight {
+    0% {
+        background-color: rgba(255, 235, 20, 0);
+        border-radius: 12px;
+    }
+
+    30% {
+        background-color: rgba(255, 235, 20, 0.6);
+        border-radius: 12px;
+    }
+
+    100% {
+        background-color: rgba(255, 235, 20, 0);
+        border-radius: 12px;
     }
 }

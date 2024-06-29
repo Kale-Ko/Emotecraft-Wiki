@@ -95,6 +95,13 @@ async function fetchJsonCached(url, options) {
         }
         console.log("Selected language is " + language + ".");
         console.log("Selected page is " + page + ".");
+        function scrollToElement(element) {
+            element.scrollIntoView({ behavior: "smooth", block: "center" });
+            element.classList.add("highlight");
+            element.getAnimations()[0]?.addEventListener("finish", () => {
+                element.classList.remove("highlight");
+            });
+        }
         async function displayMarkdown(element, data) {
             let markedInstance = new marked.Marked();
             markedInstance.use({ gfm: true });
@@ -131,6 +138,15 @@ async function fetchJsonCached(url, options) {
                             event.preventDefault();
                             history.pushState(null, "", href);
                             loadPage();
+                        });
+                    }
+                    else if (href.startsWith("#")) {
+                        element.addEventListener("click", (event) => {
+                            event.preventDefault();
+                            let scrollElement = document.querySelector(href);
+                            if (scrollElement !== null) {
+                                scrollToElement(scrollElement);
+                            }
                         });
                     }
                 }
@@ -191,7 +207,7 @@ async function fetchJsonCached(url, options) {
             if (window.location.hash.length > 0) {
                 let scrollElement = document.querySelector(window.location.hash);
                 if (scrollElement !== null) {
-                    scrollElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                    scrollToElement(scrollElement);
                 }
             }
         }

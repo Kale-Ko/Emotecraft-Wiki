@@ -132,6 +132,15 @@ interface VersionInfo {
         console.log("Selected language is " + language + ".");
         console.log("Selected page is " + page + ".");
 
+        function scrollToElement(element: HTMLElement) {
+            element.scrollIntoView({ behavior: "smooth", block: "center" });
+
+            element.classList.add("highlight");
+            element.getAnimations()[0]?.addEventListener("finish", () => {
+                element.classList.remove("highlight");
+            });
+        }
+
         async function displayMarkdown(element: HTMLElement, data: string): Promise<void> {
             let markedInstance = new marked.Marked();
             markedInstance.use({ gfm: true });
@@ -176,6 +185,15 @@ interface VersionInfo {
                             history.pushState(null, "", href);
 
                             loadPage();
+                        });
+                    } else if (href.startsWith("#")) {
+                        element.addEventListener("click", (event: MouseEvent): void => {
+                            event.preventDefault();
+
+                            let scrollElement: HTMLElement | null = document.querySelector(href);
+                            if (scrollElement !== null) {
+                                scrollToElement(scrollElement);
+                            }
                         });
                     }
                 }
@@ -257,7 +275,7 @@ interface VersionInfo {
             if (window.location.hash.length > 0) {
                 let scrollElement: HTMLElement | null = document.querySelector(window.location.hash);
                 if (scrollElement !== null) {
-                    scrollElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                    scrollToElement(scrollElement);
                 }
             }
         }
