@@ -115,6 +115,17 @@ interface VersionInfo {
 
     console.groupEnd();
 
+    function scrollToElement(element: HTMLElement) {
+        element.classList.remove("highlight");
+
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+
+        element.classList.add("highlight");
+        element.getAnimations()[0]?.addEventListener("finish", () => {
+            element.classList.remove("highlight");
+        });
+    }
+
     async function loadPage() {
         console.group("Loading page...");
 
@@ -131,15 +142,6 @@ interface VersionInfo {
 
         console.log("Selected language is " + language + ".");
         console.log("Selected page is " + page + ".");
-
-        function scrollToElement(element: HTMLElement) {
-            element.scrollIntoView({ behavior: "smooth", block: "center" });
-
-            element.classList.add("highlight");
-            element.getAnimations()[0]?.addEventListener("finish", () => {
-                element.classList.remove("highlight");
-            });
-        }
 
         async function displayMarkdown(element: HTMLElement, data: string): Promise<void> {
             let markedInstance = new marked.Marked();
@@ -182,13 +184,18 @@ interface VersionInfo {
                         element.addEventListener("click", (event: MouseEvent): void => {
                             event.preventDefault();
 
-                            history.pushState(null, "", href);
+                            let url: URL = new URL(href);
+                            history.pushState({ mode: "changePage", prevUrl: window.location.href, prevState: history.state }, "", url);
 
                             loadPage();
                         });
                     } else if (href.startsWith("#")) {
                         element.addEventListener("click", (event: MouseEvent): void => {
                             event.preventDefault();
+
+                            let url: URL = new URL(window.location.href);
+                            url.hash = href;
+                            history.pushState({ mode: "jumpToElement", prevUrl: window.location.href, prevState: history.state }, "", url);
 
                             let scrollElement: HTMLElement | null = document.querySelector(href);
                             if (scrollElement !== null) {
@@ -377,8 +384,7 @@ interface VersionInfo {
 
             let url: URL = new URL(window.location.href);
             url.searchParams.set("language", languageElement.value);
-
-            history.pushState(null, "", url);
+            history.pushState({ mode: "changePage", prevUrl: window.location.href, prevState: history.state }, "", url);
 
             loadPage();
         });
