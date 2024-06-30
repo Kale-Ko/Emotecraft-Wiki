@@ -213,10 +213,6 @@ async function fetchJsonCached(url, options) {
             await displayMarkdown(document.querySelector("#table-of-contents"), data);
         }
         async function markDone() {
-            if ("fonts" in document) { // Prevent font flicker
-                await document.fonts.load("1ex Roboto Slab");
-                await document.fonts.load("bold 1ex Roboto Slab");
-            }
             let body = document.querySelector("body");
             body.classList.remove("loading");
             body.classList.add("loaded");
