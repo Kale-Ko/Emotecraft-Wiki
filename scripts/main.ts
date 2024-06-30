@@ -283,11 +283,6 @@ interface VersionInfo {
         }
 
         async function markDone(): Promise<void> {
-            if ("fonts" in document) {  // Prevent font flicker
-                await document.fonts.load("1ex Roboto Slab");
-                await document.fonts.load("bold 1ex Roboto Slab");
-            }
-
             let body: HTMLBodyElement = document.querySelector("body") as HTMLBodyElement;
             body.classList.remove("loading");
             body.classList.add("loaded");

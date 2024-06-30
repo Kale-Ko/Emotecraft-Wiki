@@ -3,7 +3,7 @@
 */
 
 html {
-    --text-font: "Roboto Slab";
+    --text-font: "ui-monospace";
 }
 
 html.lightmode {
@@ -57,7 +57,7 @@ body {
     background: var(--background-color);
     color: var(--text-color);
 
-    font-family: var(--text-font), serif;
+    font-family: var(--text-font);
 }
 
 #main {
