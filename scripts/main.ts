@@ -115,16 +115,18 @@ interface VersionInfo {
 
     console.groupEnd();
 
-    function scrollToElement(element: HTMLElement) {
+    function scrollToElement(element: HTMLElement): void {
         element.classList.remove("highlight");
 
         element.scrollIntoView({ behavior: "smooth", block: "center" });
 
         element.classList.add("highlight");
-        element.getAnimations()[0]?.addEventListener("finish", () => {
+        element.getAnimations()[0]?.addEventListener("finish", (): void => {
             element.classList.remove("highlight");
         });
     }
+
+    let currentUrl: URL = new URL(window.location.href);
 
     async function loadPage() {
         console.group("Loading page...");
@@ -184,8 +186,17 @@ interface VersionInfo {
                         element.addEventListener("click", (event: MouseEvent): void => {
                             event.preventDefault();
 
-                            let url: URL = new URL(href);
-                            history.pushState({ mode: "changePage", prevUrl: window.location.href, prevState: history.state }, "", url);
+                            let url: URL = new URL(window.location.href);
+                            if (href.includes("#")) {
+                                url.search = href.substring(1, href.indexOf("#"));
+                                url.hash = href.substring(href.indexOf("#"));
+                            } else {
+                                url.search = href.substring(1);
+                                url.hash = "";
+                            }
+
+                            currentUrl = url;
+                            history.pushState({ mode: "changePage" }, "", url);
 
                             loadPage();
                         });
@@ -195,7 +206,9 @@ interface VersionInfo {
 
                             let url: URL = new URL(window.location.href);
                             url.hash = href;
-                            history.pushState({ mode: "jumpToElement", prevUrl: window.location.href, prevState: history.state }, "", url);
+
+                            currentUrl = url;
+                            history.pushState({ mode: "jumpToElement" }, "", url);
 
                             let scrollElement: HTMLElement | null = document.querySelector(href);
                             if (scrollElement !== null) {
@@ -364,7 +377,7 @@ interface VersionInfo {
         console.groupEnd();
     }
 
-    async function loadSettings() {
+    async function loadSettings(): Promise<void> {
         console.group("Loading settings...");
 
         let settingsElement: HTMLDivElement = document.querySelector("#settings") as HTMLDivElement;
@@ -384,7 +397,9 @@ interface VersionInfo {
 
             let url: URL = new URL(window.location.href);
             url.searchParams.set("language", languageElement.value);
-            history.pushState({ mode: "changePage", prevUrl: window.location.href, prevState: history.state }, "", url);
+
+            currentUrl = url;
+            history.pushState({ mode: "changePage" }, "", url);
 
             loadPage();
         });
@@ -427,7 +442,7 @@ interface VersionInfo {
         console.groupEnd();
     }
 
-    async function runBackgroundCache() {
+    async function runBackgroundCache(): Promise<void> {
         console.group("Starting background caching...");
 
         for (let file of versionInfo.files) {
@@ -455,8 +470,25 @@ interface VersionInfo {
         console.groupEnd();
     }
 
-    window.addEventListener("popstate", (): void => {
-        loadPage();
+    window.addEventListener("popstate", (event: PopStateEvent): void => {
+        let url: URL = new URL(window.location.href);
+        let state = event.state;
+
+        let testUrl: URL = new URL(window.location.href);
+        testUrl.hash = "";
+        let testCurrentUrl: URL = currentUrl;
+        testCurrentUrl.hash = "";
+
+        if (testUrl.href !== testCurrentUrl.href || !(state !== null && state.mode === "jumpToElement")) {
+            loadPage();
+        } else {
+            // FIXME Chrome & Firefox are automatically scrolling to the hash element on forward/back so it isn't smooth.
+
+            let scrollElement: HTMLElement | null = document.querySelector(url.hash);
+            if (scrollElement !== null) {
+                scrollToElement(scrollElement);
+            }
+        }
     });
 
     await loadSettings();

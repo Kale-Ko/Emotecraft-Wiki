@@ -82,6 +82,15 @@ async function fetchJsonCached(url, options) {
         await caches.delete(cacheName);
     }
     console.groupEnd();
+    function scrollToElement(element) {
+        element.classList.remove("highlight");
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+        element.classList.add("highlight");
+        element.getAnimations()[0]?.addEventListener("finish", () => {
+            element.classList.remove("highlight");
+        });
+    }
+    let currentUrl = new URL(window.location.href);
     async function loadPage() {
         console.group("Loading page...");
         let parameters = new URLSearchParams(window.location.search);
@@ -95,13 +104,6 @@ async function fetchJsonCached(url, options) {
         }
         console.log("Selected language is " + language + ".");
         console.log("Selected page is " + page + ".");
-        function scrollToElement(element) {
-            element.scrollIntoView({ behavior: "smooth", block: "center" });
-            element.classList.add("highlight");
-            element.getAnimations()[0]?.addEventListener("finish", () => {
-                element.classList.remove("highlight");
-            });
-        }
         async function displayMarkdown(element, data) {
             let markedInstance = new marked.Marked();
             markedInstance.use({ gfm: true });
@@ -136,13 +138,27 @@ async function fetchJsonCached(url, options) {
                     if (href.startsWith("/")) {
                         element.addEventListener("click", (event) => {
                             event.preventDefault();
-                            history.pushState(null, "", href);
+                            let url = new URL(window.location.href);
+                            if (href.includes("#")) {
+                                url.search = href.substring(1, href.indexOf("#"));
+                                url.hash = href.substring(href.indexOf("#"));
+                            }
+                            else {
+                                url.search = href.substring(1);
+                                url.hash = "";
+                            }
+                            currentUrl = url;
+                            history.pushState({ mode: "changePage" }, "", url);
                             loadPage();
                         });
                     }
                     else if (href.startsWith("#")) {
                         element.addEventListener("click", (event) => {
                             event.preventDefault();
+                            let url = new URL(window.location.href);
+                            url.hash = href;
+                            currentUrl = url;
+                            history.pushState({ mode: "jumpToElement" }, "", url);
                             let scrollElement = document.querySelector(href);
                             if (scrollElement !== null) {
                                 scrollToElement(scrollElement);
@@ -288,7 +304,8 @@ async function fetchJsonCached(url, options) {
             console.log("Switching language to " + languageElement.value);
             let url = new URL(window.location.href);
             url.searchParams.set("language", languageElement.value);
-            history.pushState(null, "", url);
+            currentUrl = url;
+            history.pushState({ mode: "changePage" }, "", url);
             loadPage();
         });
         let html = document.querySelector("html");
@@ -343,8 +360,23 @@ async function fetchJsonCached(url, options) {
         }
         console.groupEnd();
     }
-    window.addEventListener("popstate", () => {
-        loadPage();
+    window.addEventListener("popstate", (event) => {
+        let url = new URL(window.location.href);
+        let state = event.state;
+        let testUrl = new URL(window.location.href);
+        testUrl.hash = "";
+        let testCurrentUrl = currentUrl;
+        testCurrentUrl.hash = "";
+        if (testUrl.href !== testCurrentUrl.href || !(state !== null && state.mode === "jumpToElement")) {
+            loadPage();
+        }
+        else {
+            // FIXME Chrome & Firefox are automatically scrolling to the hash element on forward/back so it isn't smooth.
+            let scrollElement = document.querySelector(url.hash);
+            if (scrollElement !== null) {
+                scrollToElement(scrollElement);
+            }
+        }
     });
     await loadSettings();
     await loadPage();
