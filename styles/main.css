@@ -136,6 +136,28 @@ body {
     height: 100%;
 }
 
+#table-of-contents-parent {
+    background: var(--foreground-color);
+    border: 2px solid var(--border-color);
+    border-radius: 22px;
+
+    width: calc(12vw - 4px);
+    /* 16% total */
+
+    margin: 3vh 2vw 3vh 1vw;
+    padding: 1vh 1vw 1vh 0vw;
+
+    float: right;
+    text-align: left;
+}
+
+#table-of-contents {
+    width: 100%;
+
+    margin: 0%;
+    padding: 0%;
+}
+
 /*
     Text
 */
@@ -218,6 +240,14 @@ th,
 th p,
 th a {
     font-size: 16px;
+}
+
+ul {
+    padding-left: 32px;
+}
+
+ul ul {
+    padding-left: 20px;
 }
 
 /*
