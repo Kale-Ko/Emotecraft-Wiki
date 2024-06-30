@@ -90,6 +90,7 @@ async function fetchJsonCached(url, options) {
             element.classList.remove("highlight");
         });
     }
+    let originalTitle = document.title;
     let currentUrl = new URL(window.location.href);
     async function loadPage() {
         console.group("Loading page...");
@@ -187,19 +188,28 @@ async function fetchJsonCached(url, options) {
                 }
             }
         }
-        async function displayPage(data) {
-            await displayMarkdown(document.querySelector("#main"), data);
-            await displayTableOfContents(generateTableOfContents(data));
-        }
-        async function displaySidebar(data) {
-            await displayMarkdown(document.querySelector("#sidebar"), data);
-        }
-        function generateTableOfContents(data) {
+        function getHeadings(data) {
             let markedInstance = new marked.Marked();
             markedInstance.use({ gfm: true });
             markedInstance.use(markedGfmHeadingId.gfmHeadingId({ prefix: "" }));
             markedInstance.parse(data);
-            let tokens = markedGfmHeadingId.getHeadingList();
+            return markedGfmHeadingId.getHeadingList();
+        }
+        function generateTitle(data) {
+            let tokens = getHeadings(data);
+            for (let token of tokens) {
+                if (token.level === 1 && token.text !== originalTitle) {
+                    break;
+                }
+                if (token.level !== 2) {
+                    continue;
+                }
+                return token.text;
+            }
+            return "Unknown";
+        }
+        function generateTableOfContents(data) {
+            let tokens = getHeadings(data);
             let output = "";
             for (let token of tokens) {
                 if (token.level <= 1) {
@@ -208,6 +218,14 @@ async function fetchJsonCached(url, options) {
                 output += "\t".repeat(token.level - 2) + "* " + "[" + token.text + "]" + "(" + "#" + token.id + ")" + "\n";
             }
             return output;
+        }
+        async function displayPage(data) {
+            await displayMarkdown(document.querySelector("#main"), data);
+            await displayTableOfContents(generateTableOfContents(data));
+            document.title = originalTitle + " - " + generateTitle(data);
+        }
+        async function displaySidebar(data) {
+            await displayMarkdown(document.querySelector("#sidebar"), data);
         }
         async function displayTableOfContents(data) {
             await displayMarkdown(document.querySelector("#table-of-contents"), data);
