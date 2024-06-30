@@ -1,5 +1,5 @@
 # Emotecraft Wiki
 
-## 404 Untranslated Language
+## Untranslated Language
 
 The language you were trying to use has not been added yet.

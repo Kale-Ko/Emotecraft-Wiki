@@ -3,7 +3,7 @@
 */
 
 html {
-    --text-font: "ui-monospace";
+    --text-font: "noto-serif", "ui-serif", "serif";
 }
 
 html.lightmode {
@@ -99,6 +99,7 @@ body {
     padding: 0%;
 
     overflow-y: scroll;
+    scrollbar-width: thin;
 }
 
 #settings {

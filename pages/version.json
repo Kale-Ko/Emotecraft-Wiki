@@ -12,9 +12,6 @@
         "/pages/{language}/home.md",
         "/pages/{language}/about.md",
         "/pages/{language}/faq.md",
-        "/pages/{language}/404-not-found.md",
-        "/pages/{language}/404-untranslated-page.md",
-        "/pages/en/404-untranslated-language.md",
         "/pages/{language}/downloads.md",
         "/pages/{language}/install-client.md",
         "/pages/{language}/install-server.md",
@@ -27,6 +24,9 @@
         "/pages/{language}/creating-emotes-blockbench.md",
         "/pages/{language}/creating-music.md",
         "/pages/{language}/a-helpful-feature.md",
-        "/pages/{language}/sharing-emotes.md"
+        "/pages/{language}/sharing-emotes.md",
+        "/pages/{language}/404-not-found.md",
+        "/pages/{language}/404-untranslated-page.md",
+        "/pages/en/404-untranslated-language.md"
     ]
 }

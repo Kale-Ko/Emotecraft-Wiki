@@ -126,6 +126,7 @@ interface VersionInfo {
         });
     }
 
+    let originalTitle: string = document.title;
     let currentUrl: URL = new URL(window.location.href);
 
     async function loadPage() {
@@ -247,23 +248,34 @@ interface VersionInfo {
             }
         }
 
-        async function displayPage(data: string): Promise<void> {
-            await displayMarkdown(document.querySelector("#main") as HTMLElement, data);
-
-            await displayTableOfContents(generateTableOfContents(data));
-        }
-
-        async function displaySidebar(data: string): Promise<void> {
-            await displayMarkdown(document.querySelector("#sidebar") as HTMLElement, data);
-        }
-
-        function generateTableOfContents(data: string): string {
+        function getHeadings(data: string): any[] {
             let markedInstance = new marked.Marked();
             markedInstance.use({ gfm: true });
             markedInstance.use(markedGfmHeadingId.gfmHeadingId({ prefix: "" }));
             markedInstance.parse(data);
 
-            let tokens: any[] = markedGfmHeadingId.getHeadingList();
+            return markedGfmHeadingId.getHeadingList();
+        }
+
+        function generateTitle(data: string): string {
+            let tokens: any[] = getHeadings(data);
+
+            for (let token of tokens) {
+                if (token.level === 1 && token.text !== originalTitle) {
+                    break;
+                }
+                if (token.level !== 2) {
+                    continue;
+                }
+
+                return token.text;
+            }
+
+            return "Unknown";
+        }
+
+        function generateTableOfContents(data: string): string {
+            let tokens: any[] = getHeadings(data);
 
             let output: string = "";
 
@@ -276,6 +288,18 @@ interface VersionInfo {
             }
 
             return output;
+        }
+
+        async function displayPage(data: string): Promise<void> {
+            await displayMarkdown(document.querySelector("#main") as HTMLElement, data);
+
+            await displayTableOfContents(generateTableOfContents(data));
+
+            document.title = originalTitle + " - " + generateTitle(data);
+        }
+
+        async function displaySidebar(data: string): Promise<void> {
+            await displayMarkdown(document.querySelector("#sidebar") as HTMLElement, data);
         }
 
         async function displayTableOfContents(data: string): Promise<void> {
