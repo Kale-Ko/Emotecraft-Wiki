@@ -121,7 +121,8 @@ interface VersionInfo {
         element.scrollIntoView({ behavior: "smooth", block: "center" });
 
         element.classList.add("highlight");
-        element.getAnimations()[0]?.addEventListener("finish", (): void => {
+
+        element.getAnimations()[0]!!.addEventListener("finish", (): void => {
             element.classList.remove("highlight");
         });
     }
@@ -145,6 +146,8 @@ interface VersionInfo {
 
         console.log("Selected language is " + language + ".");
         console.log("Selected page is " + page + ".");
+
+        let body: HTMLBodyElement = document.querySelector("body") as HTMLBodyElement;
 
         async function displayMarkdown(element: HTMLElement, data: string): Promise<void> {
             let markedInstance = new marked.Marked();
@@ -211,7 +214,7 @@ interface VersionInfo {
                             currentUrl = url;
                             history.pushState({ mode: "jumpToElement" }, "", url);
 
-                            let scrollElement: HTMLElement | null = document.querySelector(href);
+                            let scrollElement: HTMLElement | null = body.querySelector(href);
                             if (scrollElement !== null) {
                                 scrollToElement(scrollElement);
                             }
@@ -291,7 +294,7 @@ interface VersionInfo {
         }
 
         async function displayPage(data: string): Promise<void> {
-            await displayMarkdown(document.querySelector("#main") as HTMLElement, data);
+            await displayMarkdown(body.querySelector("#main") as HTMLElement, data);
 
             await displayTableOfContents(generateTableOfContents(data));
 
@@ -299,20 +302,19 @@ interface VersionInfo {
         }
 
         async function displaySidebar(data: string): Promise<void> {
-            await displayMarkdown(document.querySelector("#sidebar") as HTMLElement, data);
+            await displayMarkdown(body.querySelector("#sidebar") as HTMLElement, data);
         }
 
         async function displayTableOfContents(data: string): Promise<void> {
-            await displayMarkdown(document.querySelector("#table-of-contents") as HTMLElement, data);
+            await displayMarkdown(body.querySelector("#table-of-contents") as HTMLElement, data);
         }
 
         async function markDone(): Promise<void> {
-            let body: HTMLBodyElement = document.querySelector("body") as HTMLBodyElement;
             body.classList.remove("loading");
             body.classList.add("loaded");
 
             if (window.location.hash.length > 0) {
-                let scrollElement: HTMLElement | null = document.querySelector(window.location.hash);
+                let scrollElement: HTMLElement | null = body.querySelector(window.location.hash);
                 if (scrollElement !== null) {
                     scrollToElement(scrollElement);
                 }
@@ -399,7 +401,9 @@ interface VersionInfo {
     async function loadSettings(): Promise<void> {
         console.group("Loading settings...");
 
-        let settingsElement: HTMLDivElement = document.querySelector("#settings") as HTMLDivElement;
+        let body: HTMLBodyElement = document.querySelector("body") as HTMLBodyElement;
+
+        let settingsElement: HTMLDivElement = body.querySelector("#settings") as HTMLDivElement;
 
         let languageElement: HTMLSelectElement = settingsElement.querySelector("#settings-language") as HTMLSelectElement;
         let themeElement: HTMLButtonElement = settingsElement.querySelector("#settings-theme") as HTMLButtonElement;
@@ -523,7 +527,9 @@ interface VersionInfo {
         } else {
             // FIXME Chrome & Firefox are automatically scrolling to the hash element on forward/back so it isn't smooth.
 
-            let scrollElement: HTMLElement | null = document.querySelector(url.hash);
+            let body: HTMLBodyElement = document.querySelector("body") as HTMLBodyElement;
+
+            let scrollElement: HTMLElement | null = body.querySelector(url.hash);
             if (scrollElement !== null) {
                 scrollToElement(scrollElement);
             }

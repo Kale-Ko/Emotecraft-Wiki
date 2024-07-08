@@ -86,7 +86,7 @@ async function fetchJsonCached(url, options) {
         element.classList.remove("highlight");
         element.scrollIntoView({ behavior: "smooth", block: "center" });
         element.classList.add("highlight");
-        element.getAnimations()[0]?.addEventListener("finish", () => {
+        element.getAnimations()[0].addEventListener("finish", () => {
             element.classList.remove("highlight");
         });
     }
@@ -105,6 +105,7 @@ async function fetchJsonCached(url, options) {
         }
         console.log("Selected language is " + language + ".");
         console.log("Selected page is " + page + ".");
+        let body = document.querySelector("body");
         async function displayMarkdown(element, data) {
             let markedInstance = new marked.Marked();
             markedInstance.use({ gfm: true });
@@ -160,7 +161,7 @@ async function fetchJsonCached(url, options) {
                             url.hash = href;
                             currentUrl = url;
                             history.pushState({ mode: "jumpToElement" }, "", url);
-                            let scrollElement = document.querySelector(href);
+                            let scrollElement = body.querySelector(href);
                             if (scrollElement !== null) {
                                 scrollToElement(scrollElement);
                             }
@@ -220,22 +221,21 @@ async function fetchJsonCached(url, options) {
             return output;
         }
         async function displayPage(data) {
-            await displayMarkdown(document.querySelector("#main"), data);
+            await displayMarkdown(body.querySelector("#main"), data);
             await displayTableOfContents(generateTableOfContents(data));
             document.title = originalTitle + " - " + generateTitle(data);
         }
         async function displaySidebar(data) {
-            await displayMarkdown(document.querySelector("#sidebar"), data);
+            await displayMarkdown(body.querySelector("#sidebar"), data);
         }
         async function displayTableOfContents(data) {
-            await displayMarkdown(document.querySelector("#table-of-contents"), data);
+            await displayMarkdown(body.querySelector("#table-of-contents"), data);
         }
         async function markDone() {
-            let body = document.querySelector("body");
             body.classList.remove("loading");
             body.classList.add("loaded");
             if (window.location.hash.length > 0) {
-                let scrollElement = document.querySelector(window.location.hash);
+                let scrollElement = body.querySelector(window.location.hash);
                 if (scrollElement !== null) {
                     scrollToElement(scrollElement);
                 }
@@ -305,7 +305,8 @@ async function fetchJsonCached(url, options) {
     }
     async function loadSettings() {
         console.group("Loading settings...");
-        let settingsElement = document.querySelector("#settings");
+        let body = document.querySelector("body");
+        let settingsElement = body.querySelector("#settings");
         let languageElement = settingsElement.querySelector("#settings-language");
         let themeElement = settingsElement.querySelector("#settings-theme");
         for (let language of versionInfo.languages) {
@@ -402,7 +403,8 @@ async function fetchJsonCached(url, options) {
         }
         else {
             // FIXME Chrome & Firefox are automatically scrolling to the hash element on forward/back so it isn't smooth.
-            let scrollElement = document.querySelector(url.hash);
+            let body = document.querySelector("body");
+            let scrollElement = body.querySelector(url.hash);
             if (scrollElement !== null) {
                 scrollToElement(scrollElement);
             }
