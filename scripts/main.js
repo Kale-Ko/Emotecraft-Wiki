@@ -324,8 +324,7 @@ async function fetchJsonCached(url, options) {
         });
         let html = document.querySelector("html");
         let darkmode = html.classList.contains("darkmode");
-        if (localStorage.getItem("darkmode") !== null) {
-            darkmode = localStorage.getItem("darkmode") == "true";
+        function updateElements() {
             if (darkmode) {
                 html.classList.remove("lightmode");
                 html.classList.add("darkmode");
@@ -334,21 +333,38 @@ async function fetchJsonCached(url, options) {
                 html.classList.remove("darkmode");
                 html.classList.add("lightmode");
             }
+            let lightElements = html.querySelectorAll(".lightmode");
+            for (let i = 0; i < lightElements.length; i++) {
+                let element = lightElements.item(i);
+                if (darkmode) {
+                    element.classList.add("hidden");
+                }
+                else {
+                    element.classList.remove("hidden");
+                }
+            }
+            let darkElements = html.querySelectorAll(".darkmode");
+            for (let i = 0; i < darkElements.length; i++) {
+                let element = darkElements.item(i);
+                if (!darkmode) {
+                    element.classList.add("hidden");
+                }
+                else {
+                    element.classList.remove("hidden");
+                }
+            }
+        }
+        if (localStorage.getItem("darkmode") !== null) {
+            darkmode = localStorage.getItem("darkmode") == "true";
+            updateElements();
         }
         localStorage.setItem("darkmode", (darkmode ? "true" : "false"));
         console.log("Theme is " + (darkmode ? "darkmode" : "lightmode"));
         themeElement.addEventListener("click", () => {
             darkmode = !darkmode;
-            if (darkmode) {
-                html.classList.remove("lightmode");
-                html.classList.add("darkmode");
-            }
-            else {
-                html.classList.remove("darkmode");
-                html.classList.add("lightmode");
-            }
             localStorage.setItem("darkmode", darkmode ? "true" : "false");
             console.log("Switching theme to " + (darkmode ? "darkmode" : "lightmode"));
+            updateElements();
         });
         console.groupEnd();
     }
