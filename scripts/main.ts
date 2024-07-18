@@ -115,7 +115,15 @@ interface VersionInfo {
 
     console.groupEnd();
 
+    let scrollPaused = false;
+    let scrollQueue: HTMLElement | null = null;
+
     function scrollToElement(element: HTMLElement): void {
+        if (scrollPaused) {
+            scrollQueue = element;
+            return;
+        }
+
         element.classList.remove("highlight");
 
         element.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -125,6 +133,13 @@ interface VersionInfo {
         element.getAnimations()[0]!!.addEventListener("finish", (): void => {
             element.classList.remove("highlight");
         });
+    }
+
+    function scrollToElementQueue(): void {
+        if (scrollQueue != null) {
+            scrollToElement(scrollQueue);
+            scrollQueue = null;
+        }
     }
 
     let originalTitle: string = document.title;
@@ -490,16 +505,39 @@ interface VersionInfo {
 
         let body: HTMLBodyElement = document.querySelector("body") as HTMLBodyElement;
 
+        let sidebarDropdown = body.querySelector("#sidebar-dropdown")!!;
+
+        let sidebarActive = false;
+        sidebarDropdown.addEventListener("click", (): void => {
+            sidebarActive = !sidebarActive;
+            scrollPaused = sidebarActive;
+
+            if (sidebarActive) {
+                body.classList.add("sidebar-active");
+            } else {
+                body.classList.remove("sidebar-active");
+            }
+
+            if (!scrollPaused) {
+                scrollToElementQueue();
+            }
+        });
+
         let tableOfContentsDropdown = body.querySelector("#table-of-contents-dropdown")!!;
 
         let tableOfContentsActive = false;
         tableOfContentsDropdown.addEventListener("click", (): void => {
             tableOfContentsActive = !tableOfContentsActive;
+            scrollPaused = tableOfContentsActive && window.matchMedia("(max-width: 900px)").matches;
 
             if (tableOfContentsActive) {
                 body.classList.add("table-of-contents-active");
             } else {
                 body.classList.remove("table-of-contents-active");
+            }
+
+            if (!scrollPaused) {
+                scrollToElementQueue();
             }
         });
 

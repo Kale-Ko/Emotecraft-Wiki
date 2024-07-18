@@ -82,13 +82,25 @@ async function fetchJsonCached(url, options) {
         await caches.delete(cacheName);
     }
     console.groupEnd();
+    let scrollPaused = false;
+    let scrollQueue = null;
     function scrollToElement(element) {
+        if (scrollPaused) {
+            scrollQueue = element;
+            return;
+        }
         element.classList.remove("highlight");
         element.scrollIntoView({ behavior: "smooth", block: "center" });
         element.classList.add("highlight");
         element.getAnimations()[0].addEventListener("finish", () => {
             element.classList.remove("highlight");
         });
+    }
+    function scrollToElementQueue() {
+        if (scrollQueue != null) {
+            scrollToElement(scrollQueue);
+            scrollQueue = null;
+        }
     }
     let originalTitle = document.title;
     let currentUrl = new URL(window.location.href);
@@ -372,15 +384,34 @@ async function fetchJsonCached(url, options) {
     async function loadDeviceSupport() {
         console.group("Loading device support...");
         let body = document.querySelector("body");
+        let sidebarDropdown = body.querySelector("#sidebar-dropdown");
+        let sidebarActive = false;
+        sidebarDropdown.addEventListener("click", () => {
+            sidebarActive = !sidebarActive;
+            scrollPaused = sidebarActive;
+            if (sidebarActive) {
+                body.classList.add("sidebar-active");
+            }
+            else {
+                body.classList.remove("sidebar-active");
+            }
+            if (!scrollPaused) {
+                scrollToElementQueue();
+            }
+        });
         let tableOfContentsDropdown = body.querySelector("#table-of-contents-dropdown");
         let tableOfContentsActive = false;
         tableOfContentsDropdown.addEventListener("click", () => {
             tableOfContentsActive = !tableOfContentsActive;
+            scrollPaused = tableOfContentsActive && window.matchMedia("(max-width: 900px)").matches;
             if (tableOfContentsActive) {
                 body.classList.add("table-of-contents-active");
             }
             else {
                 body.classList.remove("table-of-contents-active");
+            }
+            if (!scrollPaused) {
+                scrollToElementQueue();
             }
         });
         console.groupEnd();
