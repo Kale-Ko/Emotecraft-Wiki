@@ -76,7 +76,7 @@ async function fetchJsonCached(url, options) {
     }
     let versionInfo = await fetchJson("/pages/version.json");
     console.log("Latest version is " + versionInfo.version + ", current version is " + currentVersion + ".");
-    if (currentVersion === null || versionInfo.version > currentVersion) {
+    if (currentVersion === null || versionInfo.version < 0 || versionInfo.version > currentVersion) {
         localStorage.setItem(cacheVersionKey, versionInfo.version.toString());
         console.log("Clearing cache...");
         await caches.delete(cacheName);
@@ -463,5 +463,7 @@ async function fetchJsonCached(url, options) {
     await loadSettings();
     await loadDeviceSupport();
     await loadPage();
-    runBackgroundCache();
+    if (versionInfo.version >= 0) {
+        runBackgroundCache();
+    }
 })();

@@ -105,7 +105,7 @@ interface VersionInfo {
 
     console.log("Latest version is " + versionInfo.version + ", current version is " + currentVersion + ".");
 
-    if (currentVersion === null || versionInfo.version > currentVersion) {
+    if (currentVersion === null || versionInfo.version < 0 || versionInfo.version > currentVersion) {
         localStorage.setItem(cacheVersionKey, versionInfo.version.toString());
 
         console.log("Clearing cache...");
@@ -602,5 +602,8 @@ interface VersionInfo {
     await loadSettings();
     await loadDeviceSupport();
     await loadPage();
-    runBackgroundCache();
+
+    if (versionInfo.version >= 0) {
+        runBackgroundCache();
+    }
 })();
