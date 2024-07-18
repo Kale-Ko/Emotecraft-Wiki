@@ -145,7 +145,7 @@ interface VersionInfo {
     let originalTitle: string = document.title;
     let currentUrl: URL = new URL(window.location.href);
 
-    async function loadPage() {
+    async function loadPage(scrollToTop: boolean = false) {
         console.group("Loading page...");
 
         let parameters: URLSearchParams = new URLSearchParams(window.location.search);
@@ -217,7 +217,7 @@ interface VersionInfo {
                             currentUrl = url;
                             history.pushState({ mode: "changePage" }, "", url);
 
-                            loadPage();
+                            loadPage(true);
                         });
                     } else if (href.startsWith("#")) {
                         element.addEventListener("click", (event: MouseEvent): void => {
@@ -325,6 +325,10 @@ interface VersionInfo {
         }
 
         async function markDone(): Promise<void> {
+            if (scrollToTop) {
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
+            }
+
             body.classList.remove("loading");
             body.classList.add("loaded");
 
