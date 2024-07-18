@@ -104,7 +104,7 @@ async function fetchJsonCached(url, options) {
     }
     let originalTitle = document.title;
     let currentUrl = new URL(window.location.href);
-    async function loadPage() {
+    async function loadPage(scrollToTop = false) {
         console.group("Loading page...");
         let parameters = new URLSearchParams(window.location.search);
         let language = parameters.get("language");
@@ -163,7 +163,7 @@ async function fetchJsonCached(url, options) {
                             }
                             currentUrl = url;
                             history.pushState({ mode: "changePage" }, "", url);
-                            loadPage();
+                            loadPage(true);
                         });
                     }
                     else if (href.startsWith("#")) {
@@ -244,6 +244,9 @@ async function fetchJsonCached(url, options) {
             await displayMarkdown(body.querySelector("#table-of-contents"), data);
         }
         async function markDone() {
+            if (scrollToTop) {
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
+            }
             body.classList.remove("loading");
             body.classList.add("loaded");
             if (window.location.hash.length > 0) {
