@@ -66,9 +66,8 @@ body {
     border-radius: 22px;
 
     width: calc(58vw - 4px);
-    /* 64% total */
 
-    margin: 3vh 1vw 3vh 1vw;
+    margin: 3vh 2vw 3vh 2vw;
     padding: 2vh 2vw 2vh 2vw;
 
     float: left;
@@ -81,10 +80,9 @@ body {
     border-radius: 22px;
 
     width: calc(16vw - 4px);
-    /* 20% total */
     height: calc(80vh - 4px);
 
-    margin: 3vh 1vw 3vh 2vw;
+    margin: 3vh 0vw 3vh 2vw;
     padding: 1vh 0vw 1vh 1vw;
 
     float: left;
@@ -142,9 +140,8 @@ body {
     border-radius: 22px;
 
     width: calc(12vw - 4px);
-    /* 16% total */
 
-    margin: 3vh 2vw 3vh 1vw;
+    margin: 3vh 2vw 3vh 0vw;
     padding: 1vh 1vw 1vh 0vw;
 
     float: right;
@@ -156,6 +153,46 @@ body {
 
     margin: 0%;
     padding: 0%;
+}
+
+/*
+    Dropdowns
+*/
+
+#sidebar-dropdown,
+#table-of-contents-dropdown {
+    display: none;
+}
+
+@media only screen and (max-width: 1280px) {
+    #main {
+        width: calc(73vw - 4px);
+    }
+
+    #table-of-contents-parent {
+        display: none;
+
+        width: calc(16vw - 4px);
+
+        margin: 3vh 2vw 3vh 0vw;
+        padding: 1vh 1vw 1vh 0vw;
+    }
+
+    #table-of-contents-dropdown {
+        display: inline;
+
+        position: absolute;
+        top: calc(3vh + 12px);
+        right: calc(2vw + 12px);
+    }
+
+    body.table-of-contents-active #sidebar-parent {
+        display: none;
+    }
+
+    body.table-of-contents-active #table-of-contents-parent {
+        display: inline;
+    }
 }
 
 /*

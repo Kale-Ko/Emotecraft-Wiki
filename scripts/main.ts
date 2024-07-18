@@ -485,6 +485,27 @@ interface VersionInfo {
         console.groupEnd();
     }
 
+    async function loadDeviceSupport(): Promise<void> {
+        console.group("Loading device support...");
+
+        let body: HTMLBodyElement = document.querySelector("body") as HTMLBodyElement;
+
+        let tableOfContentsDropdown = body.querySelector("#table-of-contents-dropdown")!!;
+
+        let tableOfContentsActive = false;
+        tableOfContentsDropdown.addEventListener("click", (): void => {
+            tableOfContentsActive = !tableOfContentsActive;
+
+            if (tableOfContentsActive) {
+                body.classList.add("table-of-contents-active");
+            } else {
+                body.classList.remove("table-of-contents-active");
+            }
+        });
+
+        console.groupEnd();
+    }
+
     async function runBackgroundCache(): Promise<void> {
         console.group("Starting background caching...");
 
@@ -537,6 +558,7 @@ interface VersionInfo {
     });
 
     await loadSettings();
+    await loadDeviceSupport();
     await loadPage();
     runBackgroundCache();
 })();
