@@ -224,13 +224,19 @@ body {
     body.table-of-contents-active #table-of-contents-parent {
         display: inline;
 
-        width: calc(94vw);
+        width: calc(94vw - 4px);
+
+        margin: 3vh 2vw 3vh 2vw;
+        padding: 1vh 1vw 1vh 1vw;
     }
 
     body.sidebar-active #sidebar-parent {
         display: inline;
 
-        width: calc(94vw);
+        width: calc(94vw - 4px);
+
+        margin: 3vh 2vw 3vh 2vw;
+        padding: 1vh 1vw 1vh 1vw;
     }
 
     body.sidebar-active #table-of-contents-parent {
