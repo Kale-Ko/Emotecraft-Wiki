@@ -221,8 +221,16 @@ body {
         display: none;
     }
 
+    body.table-of-contents-active #table-of-contents-parent {
+        display: inline;
+
+        width: calc(94vw);
+    }
+
     body.sidebar-active #sidebar-parent {
         display: inline;
+
+        width: calc(94vw);
     }
 
     body.sidebar-active #table-of-contents-parent {
