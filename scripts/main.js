@@ -369,6 +369,22 @@ async function fetchJsonCached(url, options) {
         });
         console.groupEnd();
     }
+    async function loadDeviceSupport() {
+        console.group("Loading device support...");
+        let body = document.querySelector("body");
+        let tableOfContentsDropdown = body.querySelector("#table-of-contents-dropdown");
+        let tableOfContentsActive = false;
+        tableOfContentsDropdown.addEventListener("click", () => {
+            tableOfContentsActive = !tableOfContentsActive;
+            if (tableOfContentsActive) {
+                body.classList.add("table-of-contents-active");
+            }
+            else {
+                body.classList.remove("table-of-contents-active");
+            }
+        });
+        console.groupEnd();
+    }
     async function runBackgroundCache() {
         console.group("Starting background caching...");
         for (let file of versionInfo.files) {
@@ -411,6 +427,7 @@ async function fetchJsonCached(url, options) {
         }
     });
     await loadSettings();
+    await loadDeviceSupport();
     await loadPage();
     runBackgroundCache();
 })();
