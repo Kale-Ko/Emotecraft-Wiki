@@ -16,7 +16,8 @@ Next see [Installing on Fabric/Forge](%install-client), or [Installing on Spigot
 
 ### Tool Downloads
 
-<a class="download" href="https://raw.githubusercontent.com/KosmX/emotes/dev/blender/emote_creator_bend.blend" download="emotecraft-model-bends.blend">Blender model w/ bends</a> (Recommended)\
-<a class="download" href="https://raw.githubusercontent.com/KosmX/emotes/dev/blender/emote_creator.blend" download="emotecraft-model.blend">Blender model</a>
+<a class="download" href="https://raw.githubusercontent.com/KosmX/emotes/dev/blender/emote_creator_bend_item.blend" download="emote_model-bends-items.blend">Blender model w/ bends & items</a>\
+<a class="download" href="https://raw.githubusercontent.com/KosmX/emotes/dev/blender/emote_creator_bend.blend" download="emote_model-bends.blend">Blender model w/ bends</a> (Recommended)\
+<a class="download" href="https://raw.githubusercontent.com/KosmX/emotes/dev/blender/emote_creator.blend" download="emote_model.blend">Blender model</a>
 
-<a class="download" href="https://raw.githubusercontent.com/KosmX/emotes/dev/blender/model.bbmodel" download="emotecraft-model.bbmodel">Blockbench model</a>
+<a class="download" href="https://raw.githubusercontent.com/KosmX/emotes/dev/blender/model.bbmodel" download="emote_model.bbmodel">Blockbench model</a>
